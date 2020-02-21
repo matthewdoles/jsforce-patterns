@@ -19,10 +19,10 @@ const execute = async () => {
   console.log(chalk.cyan('Change Account Name To:'), newAccountName);
 
   // Update
-  await services.updateRecord(conn, 'Account', {
+  await services.updateRecordById(conn, 'Account', [{
     Id: record.Id,
     Name: newAccountName
-  });
+  }]);
 
   // Verify
   console.log(chalk.bold.red('Execute Query...'));
@@ -33,6 +33,9 @@ const execute = async () => {
     'Id, Name'
   );
   console.log(chalk.cyan('Updated Account Name:'), updatedRecord.Name);
+
+  // services.retrieveMultipleRecordsById(conn, 'Account', updatedRecord.Id);
+  // services.createRecord(conn, 'Account', { BillingStreet: 'My Account #1' });
 
   // Logout
   await auth.logout(conn);
