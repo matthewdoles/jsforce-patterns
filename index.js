@@ -36,9 +36,18 @@ const execute = async () => {
   );
   console.log(chalk.cyan("Updated Account Name:"), updatedRecord.Name);
 
-  // const retrievedRecord = await services.retrieveRecord(conn, 'Account', updatedRecord.Id);
+  // const retrievedRecord = await services.retrieveRecord(
+  //   conn,
+  //   "Account",
+  //   updatedRecord.Id,
+  //   (err, rec) => {
+  //     console.log(rec, err);
+  //   }
+  // );
+  // console.log(retrievedRecord);
+
   // const newRecordId = await services.createRecord(conn, 'Account', { Name: 'My Account #1' });
-  // await services.deleteRecord(conn, 'Account', newRecordId)
+  // await services.deleteRecord(conn, 'Account', newRecordId.id)
 
   // Logout
   await auth.logout(conn);

@@ -1,17 +1,58 @@
 const chalk = require("chalk");
 
-const createRecord = async (conn, sObject, fields) => {
-  let recordId;
-  await conn.sobject(sObject).create(fields, (err, res) => {
-    if (err || !res.success) {
-      return console.log(err);
+// CREATE
+const createRecord = async (conn, sObject, record, callback) => {
+  const result = await conn.sobject(sObject).create(record, (err, res) => {
+    if (callback) {
+      callback(err, res);
     }
-    console.log(chalk.bold.green("Created Successfully!"));
-    recordId = res.id;
   });
-  return recordId;
+  return result;
 };
 
+const createMultipleRecords = async (conn, sObject, records, callback) =>
+  await createRecord(conn, sObject, records, callback);
+
+// READ
+const retrieveRecord = async (conn, sObject, recordId, callback) => {
+  const record = await conn.sobject(sObject).retrieve(recordId, (err, res) => {
+    if (callback) {
+      callback(err, res);
+    }
+  });
+  return record;
+};
+
+const retrieveMultipleRecords = async (conn, sObject, recordIds, callback) =>
+  await retrieveRecord(conn, sObject, recordIds, callback);
+
+// UPDATE
+const updateRecord = async (conn, sObject, record, callback) => {
+  const result = await conn.sobject(sObject).update(record, (err, res) => {
+    if (callback) {
+      callback(err, res);
+    }
+  });
+  return result;
+};
+
+const updateMultipleRecords = async (conn, sObject, records, callback) =>
+  await updateRecord(conn, sObject, records, callback);
+
+// DELETE
+const deleteRecord = async (conn, sObject, recordId, callback) => {
+  const result = await conn.sobject(sObject).destroy(recordId, (err, res) => {
+    if (callback) {
+      callback(err, res);
+    }
+  });
+  return result;
+};
+
+const deleteMultipleRecords = async (conn, sObject, recordIds, callback) =>
+  await deleteRecord(conn, sObject, recordIds, callback);
+
+// QUERY
 const selectRecordById = async (conn, sObject, recordId, fields) => {
   let record;
   await conn
@@ -26,51 +67,14 @@ const selectRecordById = async (conn, sObject, recordId, fields) => {
   return record;
 };
 
-const retrieveRecord = async (conn, sObject, recordId) => {
-  let record;
-  await conn.sobject(sObject).retrieve(recordId, function(err, res) {
-    if (err) {
-      return console.error(err);
-    }
-    record = res;
-  });
-  return record;
-};
-
-const retrieveMultipleRecords = async (conn, sObject, recordIds) =>
-  await retrieveRecord(conn, sObject, recordIds);
-
-const updateRecord = async (conn, sObject, updateFields) => {
-  await conn.sobject(sObject).update(updateFields, (err, res) => {
-    if (err) {
-      return console.error(err, res);
-    }
-    console.log(chalk.bold.green("Updated Successfully!"));
-  });
-};
-
-const updateMultipleRecords = async (conn, sObject, updateFields) =>
-  await updateRecord(conn, sObject, updateFields);
-
-const deleteRecord = async (conn, sObject, recordId) => {
-  await conn.sobject(sObject).destroy(recordId, (err, res) => {
-    if (err) {
-      return console.error(err, res);
-    }
-    console.log(chalk.bold.red("Deleted Successfully!"));
-  });
-};
-
-const deleteMultipleRecords = async (conn, sObject, recordIds) =>
-  await deleteRecord(conn, sObject, recordIds);
-
 module.exports = {
   createRecord,
-  selectRecordById,
+  createMultipleRecords,
   retrieveRecord,
   retrieveMultipleRecords,
   updateRecord,
   updateMultipleRecords,
   deleteRecord,
-  deleteMultipleRecords
+  deleteMultipleRecords,
+  selectRecordById
 };
