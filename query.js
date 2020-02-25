@@ -1,11 +1,31 @@
 const defaultFindConditions = {
-  conditions: "",
-  fields: "*",
+  conditions: '',
+  fields: '*',
   options: {
     limit: 100,
     offset: 0,
     skip: 0
   }
+};
+
+const findOne = async (
+  conn,
+  sObject,
+  queryOptions = defaultFindConditions,
+  callback
+) => {
+  let record;
+  await conn
+    .sobject(sObject)
+    .findOne(queryOptions.conditions, queryOptions.fields, queryOptions.options)
+    .execute((err, rec) => {
+      if (callback) {
+        callback(err, rec);
+      }
+      console.log(rec);
+      record = rec;
+    });
+  return record;
 };
 
 const soqlQuery = async (
@@ -56,18 +76,16 @@ const soqlQueryWithChildren = async (
 };
 
 const soslSearch = async (conn, query, callback) => {
-  const records = await conn.search(
-    query,
-    (err, res) => {
-      if (callback) {
-        callback(err, res);
-      }
+  const records = await conn.search(query, (err, res) => {
+    if (callback) {
+      callback(err, res);
     }
-  );
+  });
   return records;
 };
 
 module.exports = {
+  findOne,
   soqlQuery,
   soqlQueryWithChildren,
   soslSearch
