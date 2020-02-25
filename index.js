@@ -5,12 +5,12 @@ const history = require('./history');
 const services = require('./crud');
 const query = require('./query');
 
-const username =  process.env.SF_USERNAME
-const password =  process.env.SF_PASSWORD;
+const username = process.env.SF_USERNAME;
+const password = process.env.SF_PASSWORD;
 
 const execute = async () => {
   // Login
-  const conn = await auth.login(username, password);
+  const conn = await auth.login({ username, password });
 
   // Query
   console.log(chalk.bold.red('Execute Query...'));
@@ -52,7 +52,7 @@ const execute = async () => {
 };
 
 const testCreateDelete = async () => {
-  const conn = await auth.login(username, password);
+  const conn = await auth.login({ username, password });
   const createResult = await services.createRecord(
     conn,
     'Account',
@@ -77,7 +77,7 @@ const testCreateDelete = async () => {
 };
 
 const testRetrieve = async () => {
-  const conn = await auth.login(username, password);
+  const conn = await auth.login({ username, password });
   const record = await services.retrieveRecords(
     conn,
     'Account',
@@ -91,7 +91,7 @@ const testRetrieve = async () => {
 };
 
 const testUpdate = async () => {
-  const conn = await auth.login(username, password);
+  const conn = await auth.login({ username, password });
   const result = await services.updateRecord(
     conn,
     'Account',
@@ -108,7 +108,7 @@ const testUpdate = async () => {
 };
 
 const testQueryAndUpdate = async () => {
-  const conn = await auth.login(username, password);
+  const conn = await auth.login({ username, password });
   const result = await services.queryAndUpdateRecords(
     conn,
     'Contact',
@@ -127,7 +127,7 @@ const testQueryAndUpdate = async () => {
 };
 
 const testQueryAndUpdateWithFunction = async () => {
-  const conn = await auth.login(username, password);
+  const conn = await auth.login({ username, password });
   const result = await services.queryAndUpdateRecords(
     conn,
     'Contact',
@@ -147,7 +147,7 @@ const testQueryAndUpdateWithFunction = async () => {
 };
 
 const testQueryAndDelete = async () => {
-  const conn = await auth.login(username, password);
+  const conn = await auth.login({ username, password });
 
   const createResult = await services.createRecord(conn, 'Account', {
     Name: 'My Account #1'
@@ -169,7 +169,7 @@ const testQueryAndDelete = async () => {
 };
 
 const testSoqlQuery = async () => {
-  const conn = await auth.login(username, password);
+  const conn = await auth.login({ username, password });
   const records = await query.soqlQuery(
     conn,
     'Contact',
@@ -191,7 +191,7 @@ const testSoqlQuery = async () => {
 };
 
 const testFindOne = async () => {
-  const conn = await auth.login(username, password);
+  const conn = await auth.login({ username, password });
   const record = await query.findOne(
     conn,
     'Account',
@@ -208,7 +208,7 @@ const testFindOne = async () => {
 };
 
 const testSoslSearch = async () => {
-  const conn = await auth.login(username, password);
+  const conn = await auth.login({ username, password });
   const records = await query.soslSearch(
     conn,
     'FIND {Ab*} IN ALL FIELDS RETURNING Account(Id, Name), Lead(Id, Name)',
@@ -221,7 +221,7 @@ const testSoslSearch = async () => {
 };
 
 const testDescribeObject = async () => {
-  const conn = await auth.login(username, password);
+  const conn = await auth.login({ username, password });
   const meta = await describe.describeObject(conn, 'Account', (err, meta) => {
     console.log('Label : ' + meta.label);
     console.log('Num of Fields : ' + meta.fields.length);
@@ -235,7 +235,7 @@ const testDescribeObject = async () => {
 };
 
 const testDescribeGlobal = async () => {
-  const conn = await auth.login(username, password);
+  const conn = await auth.login({ username, password });
   const meta = await describe.describeGlobal(conn, (err, meta) => {
     console.log(meta.sobjects.length);
   });
@@ -243,7 +243,7 @@ const testDescribeGlobal = async () => {
 };
 
 const testIdentity = async () => {
-  const conn = await auth.login(username, password);
+  const conn = await auth.login({ username, password });
   const response = await describe.identity(conn, (err, res) => {
     console.log('user ID: ' + res.user_id);
     console.log('organization ID: ' + res.organization_id);
@@ -254,7 +254,7 @@ const testIdentity = async () => {
 };
 
 const recent = async () => {
-  const conn = await auth.login(username, password);
+  const conn = await auth.login({ username, password });
   const results = await history.recent(conn, 'Case', (err, res) => {
     console.log(res);
   });
@@ -262,7 +262,7 @@ const recent = async () => {
 };
 
 const recentlyUpdated = async () => {
-  const conn = await auth.login(username, password);
+  const conn = await auth.login({ username, password });
   const results = await history.recentlyUpdated(
     conn,
     'Contact',
@@ -277,7 +277,7 @@ const recentlyUpdated = async () => {
 };
 
 const recentlyDeleted = async () => {
-  const conn = await auth.login(username, password);
+  const conn = await auth.login({ username, password });
   const results = await history.recentlyDeleted(
     conn,
     'Contact',

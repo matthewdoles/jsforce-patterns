@@ -1,26 +1,40 @@
 const jsforce = require('jsforce');
 const chalk = require('chalk');
 
-const login = async (username, password, callback) => {
-  const conn = new jsforce.Connection();
-  await conn.login(
-    username,
-    password,
-    (err, userInfo) => {
-      if (callback) {
-        return callback(err, userInfo);
+const login = async (loginOptions, callback) => {
+  if (
+    loginOptions.instanceUrl !== undefined &&
+    loginOptions.accessToken !== undefined
+  ) {
+    const conn = new jsforce.Connection({
+      instanceUrl: loginOptions.instanceUrl,
+      accessToken: loginOptions.accessToken
+    });
+    return conn;
+  }
+  if (
+    loginOptions.username !== undefined &&
+    loginOptions.password !== undefined
+  ) {
+    const conn = new jsforce.Connection();
+    await conn.login(
+      loginOptions.username,
+      loginOptions.password,
+      (err, userInfo) => {
+        if (callback) {
+          return callback(err, userInfo);
+        }
       }
-    }
-  );
-  return conn;
+    );
+    return conn;
+  }
 };
 
-const logout = async conn => {
+const logout = async (conn, callback) => {
   await conn.logout(err => {
-    if (err) {
-      return console.log(chalk.red(err));
+    if (callback) {
+      callback(err);
     }
-    return console.log(chalk.bold.green('Logout Successful!'));
   });
 };
 
