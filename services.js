@@ -17,7 +17,7 @@ const createMultipleRecords = async (
 ) => {
   const results = await conn
     .sobject(sObject)
-    .create(records, { ...options }, (err, res) => {
+    .create(records, options, (err, res) => {
       if (callback) {
         callback(err, res);
       }
@@ -44,7 +44,7 @@ const retrieveMultipleRecords = async (
 ) => {
   const record = await conn
     .sobject(sObject)
-    .retrieve(recordIds, { ...options }, (err, res) => {
+    .retrieve(recordIds, options, (err, res) => {
       if (callback) {
         callback(err, res);
       }
@@ -71,7 +71,7 @@ const updateMultipleRecords = async (
 ) => {
   const results = await conn
     .sobject(sObject)
-    .update(records, { ...options }, (err, res) => {
+    .update(records, options, (err, res) => {
       if (callback) {
         callback(err, res);
       }
@@ -98,7 +98,7 @@ const deleteMultipleRecords = async (
 ) => {
   const results = await conn
     .sobject(sObject)
-    .destroy(recordIds, { ...options }, (err, res) => {
+    .destroy(recordIds, options, (err, res) => {
       if (callback) {
         callback(err, res);
       }

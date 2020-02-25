@@ -1,27 +1,28 @@
-const chalk = require('chalk');
-const auth = require('./auth');
-const services = require('./services');
+const chalk = require("chalk");
+const auth = require("./auth");
+const services = require("./services");
+const query = require("./query");
 
 const execute = async () => {
   // Login
   const conn = await auth.login(true);
 
   // Query
-  console.log(chalk.bold.red('Execute Query...'));
+  console.log(chalk.bold.red("Execute Query..."));
   const record = await services.selectRecordById(
     conn,
-    'Account',
+    "Account",
     process.env.SF_ACCOUNT_RECORD_ID,
-    'Id, Name'
+    "Id, Name"
   );
-  console.log(chalk.cyan('Current Account Name:'), record.Name);
-  const newAccountName = 'Updated Account #' + Math.floor(Math.random() * 1000);
-  console.log(chalk.cyan('Change Account Name To:'), newAccountName);
+  console.log(chalk.cyan("Current Account Name:"), record.Name);
+  const newAccountName = "Updated Account #" + Math.floor(Math.random() * 1000);
+  console.log(chalk.cyan("Change Account Name To:"), newAccountName);
 
   // Update
   await services.updateMultipleRecords(
     conn,
-    'Account',
+    "Account",
     [
       {
         Id: record.Id,
@@ -32,14 +33,32 @@ const execute = async () => {
   );
 
   // Verify
-  console.log(chalk.bold.red('Execute Query...'));
+  console.log(chalk.bold.red("Execute Query..."));
   const updatedRecord = await services.selectRecordById(
     conn,
-    'Account',
+    "Account",
     record.Id,
-    'Id, Name'
+    "Id, Name"
   );
-  console.log(chalk.cyan('Updated Account Name:'), updatedRecord.Name);
+  console.log(chalk.cyan("Updated Account Name:"), updatedRecord.Name);
+
+  const records = await query.query(
+    conn,
+    "Contact",
+    {
+      conditions: {
+        Name: { $like: "Amanda%" }
+      },
+      fields: '*, Account.*',
+      options: { 
+        limit: 5 
+      }
+    },
+    (err, recs) => {
+      console.log(recs);
+    }
+  );
+  console.log(records);
 
   // const retrievedRecord = await services.retrieveRecord(
   //   conn,
