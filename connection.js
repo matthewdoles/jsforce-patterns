@@ -33,7 +33,17 @@ const logout = async conn => {
   });
 };
 
+const apiLimit = conn => {
+  return conn.limitInfo.apiUsage.limit;
+};
+
+const apiUsed = conn => {
+  return conn.limitInfo.apiUsage.used;
+};
+
 module.exports = {
   login,
-  logout
+  logout,
+  apiLimit,
+  apiUsed
 };
