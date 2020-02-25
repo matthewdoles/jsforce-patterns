@@ -27,6 +27,20 @@ const findOne = async (
   return record;
 };
 
+// const selectRecordById = async (conn, sObject, recordId, fields) => {
+//   let record;
+//   await conn
+//     .sobject(sObject)
+//     .find({ Id: recordId }, fields)
+//     .execute((err, res) => {
+//       if (err) {
+//         return console.error(err);
+//       }
+//       record = res[0];
+//     });
+//   return record;
+// };
+
 const soqlQuery = async (
   conn,
   sObject,

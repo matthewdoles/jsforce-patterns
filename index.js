@@ -9,7 +9,7 @@ const execute = async () => {
 
   // Query
   console.log(chalk.bold.red('Execute Query...'));
-  const record = await services.selectRecordById(
+  const record = await query.findOne(
     conn,
     'Account',
     process.env.SF_ACCOUNT_RECORD_ID,
@@ -34,7 +34,7 @@ const execute = async () => {
 
   // Verify
   console.log(chalk.bold.red('Execute Query...'));
-  const updatedRecord = await services.selectRecordById(
+  const updatedRecord = await query.findOne(
     conn,
     'Account',
     record.Id,
@@ -102,6 +102,46 @@ const testUpdate = async () => {
   await auth.logout(conn);
 };
 
+const testQueryAndUpdate = async () => {
+  const conn = await auth.login(true);
+  const result = await services.queryAndUpdateRecords(
+    conn,
+    'Contact',
+    {
+      Name: { $like: 'Ama%' }
+    },
+    {
+      Phone: 1234567890
+    },
+    (err, res) => {
+      console.log(err, res);
+    }
+  );
+  console.log(result);
+  await auth.logout(conn);
+};
+
+const testQueryAndDelete = async () => {
+  const conn = await auth.login(true);
+
+  const createResult = await services.createRecord(conn, 'Account', {
+    Name: 'My Account #1'
+  });
+  console.log(createResult);
+
+  const result = await services.queryAndDeleteRecords(
+    conn,
+    'Account',
+    {
+      Name: 'My Account #1'
+    },(err, res) => {
+      console.log(err, res);
+    }
+  );
+  console.log(result);
+  await auth.logout(conn);
+};
+
 const testSoqlQuery = async () => {
   const conn = await auth.login(true);
   const records = await query.soqlQuery(
@@ -126,12 +166,17 @@ const testSoqlQuery = async () => {
 
 const testFindOne = async () => {
   const conn = await auth.login(true);
-  const record = await query.findOne(conn, 'Account', {
-    conditions: { Name: { $like: 'S%' } },
-    fields: ['Id', 'Name']
-  }, (err, rec) => {
-    console.log(err, rec);
-  });
+  const record = await query.findOne(
+    conn,
+    'Account',
+    {
+      conditions: { Name: { $like: 'S%' } },
+      fields: ['Id', 'Name']
+    },
+    (err, rec) => {
+      console.log(err, rec);
+    }
+  );
   console.log(record);
   await auth.logout(conn);
 };
@@ -140,13 +185,13 @@ const testSoslSearch = async () => {
   const conn = await auth.login(true);
   const records = await query.soslSearch(
     conn,
-    "FIND {Ab*} IN ALL FIELDS RETURNING Account(Id, Name), Lead(Id, Name)",
+    'FIND {Ab*} IN ALL FIELDS RETURNING Account(Id, Name), Lead(Id, Name)',
     (err, recs) => {
       console.log(err, recs);
     }
   );
-  console.log(records.length)
+  console.log(records.length);
   await auth.logout(conn);
 };
 
-testFindOne();
+testQueryAndDelete();

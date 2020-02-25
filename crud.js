@@ -106,19 +106,40 @@ const deleteMultipleRecords = async (
   return results;
 };
 
-// QUERY
-const selectRecordById = async (conn, sObject, recordId, fields) => {
-  let record;
-  await conn
+// QUERY + CRUD
+const queryAndUpdateRecords = async (
+  conn,
+  sObject,
+  conditions,
+  updates,
+  callback
+) => {
+  const results = await conn
     .sobject(sObject)
-    .find({ Id: recordId }, fields)
-    .execute((err, res) => {
-      if (err) {
-        return console.error(err);
+    .find(conditions)
+    .update(updates, (err, res) => {
+      if (callback) {
+        callback(err, res);
       }
-      record = res[0];
     });
-  return record;
+  return results;
+};
+
+const queryAndDeleteRecords = async (
+  conn,
+  sObject,
+  conditions,
+  callback
+) => {
+  const results = await conn
+    .sobject(sObject)
+    .find(conditions)
+    .destroy((err, res) => {
+      if (callback) {
+        callback(err, res);
+      }
+    });
+  return results;
 };
 
 module.exports = {
@@ -130,5 +151,6 @@ module.exports = {
   updateMultipleRecords,
   deleteRecord,
   deleteMultipleRecords,
-  selectRecordById
+  queryAndUpdateRecords,
+  queryAndDeleteRecords
 };
