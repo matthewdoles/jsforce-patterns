@@ -1,6 +1,7 @@
 const chalk = require('chalk');
 const auth = require('./connection');
 const describe = require('./decsribe');
+const history = require('./history');
 const services = require('./crud');
 const query = require('./query');
 
@@ -241,12 +242,51 @@ const testDescribeGlobal = async () => {
 const testIdentity = async () => {
   const conn = await auth.login(true);
   const response = await describe.identity(conn, (err, res) => {
-    console.log("user ID: " + res.user_id);
-    console.log("organization ID: " + res.organization_id);
-    console.log("username: " + res.username);
-    console.log("display name: " + res.display_name);
+    console.log('user ID: ' + res.user_id);
+    console.log('organization ID: ' + res.organization_id);
+    console.log('username: ' + res.username);
+    console.log('display name: ' + res.display_name);
   });
   await auth.logout(conn);
 };
 
-testIdentity();
+const recent = async () => {
+  const conn = await auth.login(true);
+  const results = await history.recent(conn, 'Case', (err, res) => {
+    console.log(res);
+  });
+  await auth.logout(conn);
+};
+
+const recentlyUpdated = async () => {
+  const conn = await auth.login(true);
+  const results = await history.recentlyUpdated(
+    conn,
+    'Contact',
+    '2020-02-20',
+    '2020-02-26',
+    (err, res) => {
+      console.log('Latest date covered: ' + res.latestDateCovered);
+      console.log('Updated records : ' + res.ids.length);
+    }
+  );
+  await auth.logout(conn);
+};
+
+const recentlyDeleted = async () => {
+  const conn = await auth.login(true);
+  const results = await history.recentlyDeleted(
+    conn,
+    'Contact',
+    '2020-02-20',
+    '2020-02-26',
+    (err, res) => {
+      console.log('Ealiest date available: ' + res.earliestDateAvailable);
+      console.log('Latest date covered: ' + res.latestDateCovered);
+      console.log('Deleted records : ' + res.deletedRecords.length);
+    }
+  );
+  await auth.logout(conn);
+};
+
+recentlyDeleted();
