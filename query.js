@@ -22,7 +22,6 @@ const findOne = async (
       if (callback) {
         callback(err, rec);
       }
-      console.log(rec);
       record = rec;
     });
   return record;
@@ -76,9 +75,13 @@ const soqlQueryWithChildren = async (
 };
 
 const soslSearch = async (conn, query, callback) => {
-  const records = await conn.search(query, (err, res) => {
+  let records;
+  await conn.search(query, (err, recs) => {
     if (callback) {
-      callback(err, res);
+      callback(err, recs);
+    }
+    if (recs) {
+      records = recs.searchRecords
     }
   });
   return records;

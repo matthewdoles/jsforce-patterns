@@ -1,6 +1,6 @@
 const chalk = require('chalk');
-const auth = require('./auth');
-const services = require('./services');
+const auth = require('./connection');
+const services = require('./crud');
 const query = require('./query');
 
 const execute = async () => {
@@ -42,50 +42,111 @@ const execute = async () => {
   );
   console.log(chalk.cyan('Updated Account Name:'), updatedRecord.Name);
 
-  // await query.findOne(conn, 'Account', {
-  //   conditions: { Name: { $like: 'S%' } },
-  //   fields: ['Id', 'Name']
-  // });
-
-  // const records = await query.soslSearch(
-  //   conn,
-  //   "FIND {Un*} IN ALL FIELDS RETURNING Account(Id, Name), Lead(Id, Name)"
-  // );
-  // console.log(records)
-
-  // const records = await query.soqlQuery(
-  //   conn,
-  //   "Contact",
-  //   {
-  //     conditions: {
-  //       Name: { $like: "Amanda%" }
-  //     },
-  //     fields: '*, Account.*',
-  //     options: {
-  //       limit: 5
-  //     }
-  //   },
-  //   (err, recs) => {
-  //     console.log(recs);
-  //   }
-  // );
-  // console.log(records);
-
-  // const retrievedRecord = await services.retrieveRecord(
-  //   conn,
-  //   "Account",
-  //   updatedRecord.Id,
-  //   (err, rec) => {
-  //     console.log(rec, err);
-  //   }
-  // );
-  // console.log(retrievedRecord);
-
-  // const newRecordId = await services.createRecord(conn, 'Account', { Name: 'My Account #1' });
-  // await services.deleteRecord(conn, 'Account', newRecordId.id)
-
   // Logout
   await auth.logout(conn);
 };
 
-execute();
+const testCreateDelete = async () => {
+  const conn = await auth.login(true);
+  const createResult = await services.createRecord(
+    conn,
+    'Account',
+    {
+      Name: 'My Account #1'
+    },
+    (err, res) => {
+      console.log(err, res);
+    }
+  );
+  console.log(createResult);
+  const deleteResult = await services.deleteRecord(
+    conn,
+    'Account',
+    createResult.id,
+    (err, res) => {
+      console.log(err, res);
+    }
+  );
+  console.log(deleteResult);
+  await auth.logout(conn);
+};
+
+const testRetrieve = async () => {
+  const conn = await auth.login(true);
+  const record = await services.retrieveRecords(
+    conn,
+    'Account',
+    process.env.SF_ACCOUNT_RECORD_ID,
+    (err, rec) => {
+      console.log(err, rec);
+    }
+  );
+  console.log(record);
+  await auth.logout(conn);
+};
+
+const testUpdate = async () => {
+  const conn = await auth.login(true);
+  const result = await services.updateRecord(
+    conn,
+    'Account',
+    {
+      Id: process.env.SF_ACCOUNT_RECORD_ID,
+      Name: 'Test Account Name'
+    },
+    (err, res) => {
+      console.log(err, res);
+    }
+  );
+  console.log(result);
+  await auth.logout(conn);
+};
+
+const testSoqlQuery = async () => {
+  const conn = await auth.login(true);
+  const records = await query.soqlQuery(
+    conn,
+    'Contact',
+    {
+      conditions: {
+        Name: { $like: 'A%' }
+      },
+      fields: '*, Account.*',
+      options: {
+        limit: 5
+      }
+    },
+    (err, recs) => {
+      console.log(err, recs);
+    }
+  );
+  console.log(records.length);
+  await auth.logout(conn);
+};
+
+const testFindOne = async () => {
+  const conn = await auth.login(true);
+  const record = await query.findOne(conn, 'Account', {
+    conditions: { Name: { $like: 'S%' } },
+    fields: ['Id', 'Name']
+  }, (err, rec) => {
+    console.log(err, rec);
+  });
+  console.log(record);
+  await auth.logout(conn);
+};
+
+const testSoslSearch = async () => {
+  const conn = await auth.login(true);
+  const records = await query.soslSearch(
+    conn,
+    "FIND {Ab*} IN ALL FIELDS RETURNING Account(Id, Name), Lead(Id, Name)",
+    (err, recs) => {
+      console.log(err, recs);
+    }
+  );
+  console.log(records.length)
+  await auth.logout(conn);
+};
+
+testFindOne();
