@@ -8,7 +8,7 @@ const defaultFindConditions = {
   }
 };
 
-const query = async (
+const soqlQuery = async (
   conn,
   sObject,
   queryOptions = defaultFindConditions,
@@ -27,7 +27,7 @@ const query = async (
   return records;
 };
 
-const queryWithChildren = async (
+const soqlQueryWithChildren = async (
   conn,
   parentObject,
   parentOptions = defaultFindConditions,
@@ -55,7 +55,20 @@ const queryWithChildren = async (
   return records;
 };
 
+const soslSearch = async (conn, query, callback) => {
+  const records = await conn.search(
+    query,
+    (err, res) => {
+      if (callback) {
+        callback(err, res);
+      }
+    }
+  );
+  return records;
+};
+
 module.exports = {
-  query,
-  queryWithChildren
+  soqlQuery,
+  soqlQueryWithChildren,
+  soslSearch
 };

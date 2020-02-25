@@ -42,23 +42,29 @@ const execute = async () => {
   );
   console.log(chalk.cyan("Updated Account Name:"), updatedRecord.Name);
 
-  const records = await query.query(
-    conn,
-    "Contact",
-    {
-      conditions: {
-        Name: { $like: "Amanda%" }
-      },
-      fields: '*, Account.*',
-      options: { 
-        limit: 5 
-      }
-    },
-    (err, recs) => {
-      console.log(recs);
-    }
-  );
-  console.log(records);
+  // const records = await query.soslSearch(
+  //   conn,
+  //   "FIND {Un*} IN ALL FIELDS RETURNING Account(Id, Name), Lead(Id, Name)"
+  // );
+  // console.log(records)
+
+  // const records = await query.soqlQuery(
+  //   conn,
+  //   "Contact",
+  //   {
+  //     conditions: {
+  //       Name: { $like: "Amanda%" }
+  //     },
+  //     fields: '*, Account.*',
+  //     options: {
+  //       limit: 5
+  //     }
+  //   },
+  //   (err, recs) => {
+  //     console.log(recs);
+  //   }
+  // );
+  // console.log(records);
 
   // const retrievedRecord = await services.retrieveRecord(
   //   conn,
