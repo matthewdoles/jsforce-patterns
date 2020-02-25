@@ -1,5 +1,6 @@
 const chalk = require('chalk');
 const auth = require('./connection');
+const describe = require('./decsribe');
 const services = require('./crud');
 const query = require('./query');
 
@@ -121,6 +122,26 @@ const testQueryAndUpdate = async () => {
   await auth.logout(conn);
 };
 
+const testQueryAndUpdateWithFunction = async () => {
+  const conn = await auth.login(true);
+  const result = await services.queryAndUpdateRecords(
+    conn,
+    'Contact',
+    {
+      Name: { $like: 'Ama%' }
+    },
+    rec => {
+      console.log(rec);
+      return { HomePhone: rec.Phone, Id: rec.Id };
+    },
+    (err, res) => {
+      console.log(err, res);
+    }
+  );
+  console.log(result);
+  await auth.logout(conn);
+};
+
 const testQueryAndDelete = async () => {
   const conn = await auth.login(true);
 
@@ -134,7 +155,8 @@ const testQueryAndDelete = async () => {
     'Account',
     {
       Name: 'My Account #1'
-    },(err, res) => {
+    },
+    (err, res) => {
       console.log(err, res);
     }
   );
@@ -194,4 +216,37 @@ const testSoslSearch = async () => {
   await auth.logout(conn);
 };
 
-testQueryAndDelete();
+const testDescribeObject = async () => {
+  const conn = await auth.login(true);
+  const meta = await describe.describeObject(conn, 'Account', (err, meta) => {
+    console.log('Label : ' + meta.label);
+    console.log('Num of Fields : ' + meta.fields.length);
+  });
+  await setTimeout(() => {
+    const cached = conn.sobject('Account').describe$();
+    console.log('Label : ' + cached.label);
+    console.log('Num of Fields : ' + cached.fields.length);
+  }, 5000);
+  await auth.logout(conn);
+};
+
+const testDescribeGlobal = async () => {
+  const conn = await auth.login(true);
+  const meta = await describe.describeGlobal(conn, (err, meta) => {
+    console.log(meta.sobjects.length);
+  });
+  await auth.logout(conn);
+};
+
+const testIdentity = async () => {
+  const conn = await auth.login(true);
+  const response = await describe.identity(conn, (err, res) => {
+    console.log("user ID: " + res.user_id);
+    console.log("organization ID: " + res.organization_id);
+    console.log("username: " + res.username);
+    console.log("display name: " + res.display_name);
+  });
+  await auth.logout(conn);
+};
+
+testIdentity();
