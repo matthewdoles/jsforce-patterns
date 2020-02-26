@@ -18,6 +18,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --setupFiles dotenv/config",
+    "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls",
     "start": "node index.js",
     "dev": "nodemon ./test/examples.js"
   },
@@ -33,6 +34,7 @@
     "node": ">=4.0"
   },
   "devDependencies": {
+    "coveralls": "^3.0.9",
     "dotenv": "^8.2.0",
     "jest": "^25.1.0",
     "nodemon": "^2.0.2"

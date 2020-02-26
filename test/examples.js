@@ -274,7 +274,6 @@ const recentlyUpdated = async () => {
 
 const recentlyDeleted = async () => {
   const conn = await jsforce.login({ username, password });
-  console.log(conn)
   const results = await jsforce.recentlyDeleted(
     conn,
     'Contact',

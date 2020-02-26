@@ -1,11 +1,24 @@
 const { login } = require('../index');
 
 test('Should login user', async () => {
-  const conn = await login({
-    username: process.env.SF_USERNAME,
-    password: process.env.SF_PASSWORD
+  login(
+    {
+      username: process.env.SF_USERNAME,
+      password: process.env.SF_PASSWORD
+    },
+    (err, res) => {
+      expect(res.id).toBeTruthy();
+      expect(res.organizationId).toBeTruthy();
+      expect(res.url).toBeTruthy();
+    }
+  );
+});
+
+test('Should fail to login user', async () => {
+  expect(() => {
+    login({
+      username: process.env.SF_USERNAME,
+      password: 'nottherightpassword'
+    }).toThrow();
   });
-  expect(conn.userInfo.id).toBeTruthy();
-  expect(conn.instanceUrl).toBeTruthy();
-  expect(conn.accessToken).toBeTruthy();
 });
