@@ -1,15 +1,37 @@
 {
-  "name": "node-salesforce",
+  "author": "Matthew Doles <matteddied@gmail.com>",
+  "name": "jsforce-patterns",
   "version": "1.0.0",
-  "description": "",
+  "description": "JSForce extension creating dynamic and reusable patterns for reptitive code",
+  "keywords": [
+    "salesforce",
+    "salesforce.com",
+    "sfdc",
+    "jsforce"
+  ],
+  "homepage": "http://github.com/matthewdoles/jsforce-patterns",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/matthewdoles/jsforce-patterns.git"
+  },
+  "license": "MIT",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon ./test/examples.js"
   },
-  "author": "",
-  "license": "ISC",
+  "files": [
+    "README.md",
+    "LICENSE",
+    "package.json",
+    "lib",
+    "test",
+    "index.js"
+  ],
+  "engines": {
+    "node": ">=4.0"
+  },
   "devDependencies": {
     "nodemon": "^2.0.2"
   },
