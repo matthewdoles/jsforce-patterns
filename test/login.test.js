@@ -1,6 +1,6 @@
 const { login } = require('../index');
 
-test('Should login user', async () => {
+test('Should login user (w/ callback)', () => {
   login(
     {
       username: process.env.SF_USERNAME,
@@ -14,11 +14,34 @@ test('Should login user', async () => {
   );
 });
 
-test('Should fail to login user', async () => {
-  expect(() => {
-    login({
+test('Should login user (w/out callback)', async () => {
+  const conn = await login({
+    username: process.env.SF_USERNAME,
+    password: process.env.SF_PASSWORD
+  });
+  expect(conn.accessToken).toBeTruthy();
+  expect(conn.instanceUrl).toBeTruthy();
+});
+
+test('Should fail to login user (w/ callback)', () => {
+  login(
+    {
       username: process.env.SF_USERNAME,
       password: 'nottherightpassword'
-    }).toThrow();
-  });
+    },
+    (err, res) => {
+      expect(err).toBeTruthy();
+      expect(res).toBeFalsy();
+    }
+  );
 });
+
+test('Should fail to login user (w/out callback)', async () => {
+  const conn = await login({
+    username: process.env.SF_USERNAME,
+    password: 'nottherightpassword'
+  });
+  expect(conn.accessToken).toBeFalsy();
+  expect(conn.instanceUrl).toBeFalsy();
+});
+
