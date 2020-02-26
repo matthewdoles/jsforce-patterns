@@ -1,4 +1,7 @@
-### Node & Salesforce
+### JSForce Patterns
+[![Build Status](https://travis-ci.org/matthewdoles/jsforce-patterns.svg?branch=master)](https://travis-ci.org/matthewdoles/jsforce-patterns)
+
+// TODO: Update documentation
 
 #### Overview
 Playing around with the [JSForce](https://jsforce.github.io/start/) library which gives ease of access to the various Salesforce APIs. To run locally - pull down code, install dependencies (npm install), provide the necessary environemnt vairables, and execute code (npm start). The required environemnt variables include a username and password (may need to append API token) to your own Salesforce environment - and any hardcoded Account record Id from your org. Nodemon is provided as a dev dependency and environment variables can be provided through a nodemon.json file (use npm run dev instead of npm start).
