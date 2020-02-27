@@ -6,11 +6,11 @@ const password = process.env.SF_PASSWORD;
 
 const execute = async () => {
   // Login
-  const conn = await auth.login({ username, password });
+  const conn = await jsforce.login({ username, password });
 
   // Query
   console.log(chalk.bold.red('Execute Query...'));
-  const record = await query.findOne(
+  const record = await jsforce.findOne(
     conn,
     'Account',
     process.env.SF_ACCOUNT_RECORD_ID,
@@ -21,7 +21,7 @@ const execute = async () => {
   console.log(chalk.cyan('Change Account Name To:'), newAccountName);
 
   // Update
-  await services.updateMultipleRecords(
+  await jsforce.updateMultipleRecords(
     conn,
     'Account',
     [
@@ -35,7 +35,7 @@ const execute = async () => {
 
   // Verify
   console.log(chalk.bold.red('Execute Query...'));
-  const updatedRecord = await query.findOne(
+  const updatedRecord = await jsforce.findOne(
     conn,
     'Account',
     record.Id,
@@ -44,7 +44,7 @@ const execute = async () => {
   console.log(chalk.cyan('Updated Account Name:'), updatedRecord.Name);
 
   // Logout
-  await auth.logout(conn);
+  await jsforce.logout(conn);
 };
 
 const testCreateDelete = async () => {
@@ -217,44 +217,34 @@ const testSoslSearch = async () => {
 };
 
 const testDescribeObject = async () => {
-  const conn = await auth.login({ username, password });
-  const meta = await describe.describeObject(conn, 'Account', (err, meta) => {
-    console.log('Label : ' + meta.label);
-    console.log('Num of Fields : ' + meta.fields.length);
-  });
-  await setTimeout(() => {
-    const cached = conn.sobject('Account').describe$();
-    console.log('Label : ' + cached.label);
-    console.log('Num of Fields : ' + cached.fields.length);
-  }, 5000);
-  await auth.logout(conn);
+  const conn = await jsforce.login({ username, password });
+  const meta = await jsforce.describeObject(conn, 'Account');
+  console.log(meta)
+  await jsforce.logout(conn);
 };
 
 const testDescribeGlobal = async () => {
-  const conn = await auth.login({ username, password });
-  const meta = await describe.describeGlobal(conn, (err, meta) => {
+  const conn = await jsforce.login({ username, password });
+  const meta = await jsforce.describeGlobal(conn, (err, meta) => {
     console.log(meta.sobjects.length);
   });
-  await auth.logout(conn);
+  console.log(meta.sobjects.length);
+  await jsforce.logout(conn);
 };
 
 const testIdentity = async () => {
-  const conn = await auth.login({ username, password });
-  const response = await describe.identity(conn, (err, res) => {
-    console.log('user ID: ' + res.user_id);
-    console.log('organization ID: ' + res.organization_id);
-    console.log('username: ' + res.username);
-    console.log('display name: ' + res.display_name);
-  });
-  await auth.logout(conn);
+  const conn = await jsforce.login({ username, password });
+  const response = await jsforce.identity(conn);
+  console.log(response);
+  await jsforce.logout(conn);
 };
 
 const recent = async () => {
-  const conn = await auth.login({ username, password });
-  const results = await history.recent(conn, 'Case', (err, res) => {
+  const conn = await jsforce.login({ username, password });
+  const results = await jsforce.recent(conn, 'Case', (err, res) => {
     console.log(res);
   });
-  await auth.logout(conn);
+  await jsforce.logout(conn);
 };
 
 const recentlyUpdated = async () => {
@@ -288,4 +278,4 @@ const recentlyDeleted = async () => {
   await jsforce.logout(conn);
 };
 
-recentlyDeleted();
+testDescribeGlobal();
