@@ -19,6 +19,22 @@ test('Should update record (w/ callbacks)', async () => {
   );
 });
 
+test('Should update record (w/out callbacks)', async () => {
+  const conn = await login({
+    username: process.env.SF_USERNAME,
+    password: process.env.SF_PASSWORD
+  });
+  const updateResult = await updateRecord(
+    conn,
+    'Account',
+    {
+      Id: process.env.SF_ACCOUNT_RECORD_ID,
+      Name: 'Test Account Name'
+    }
+  );
+  expect(updateResult).toBeTruthy();
+});
+
 test('Should update records (w/ callbacks)', async () => {
   const conn = await login({
     username: process.env.SF_USERNAME,
@@ -36,4 +52,20 @@ test('Should update records (w/ callbacks)', async () => {
       expect(err).toBeFalsy();
     }
   );
+});
+
+test('Should update records (w/ callbacks)', async () => {
+  const conn = await login({
+    username: process.env.SF_USERNAME,
+    password: process.env.SF_PASSWORD
+  });
+  const updateResult = await updateRecord(
+    conn,
+    'Account',
+    [{
+      Id: process.env.SF_ACCOUNT_RECORD_ID,
+      Name: 'Test Account Name'
+    }]
+  );
+  expect(updateResult).toBeTruthy();
 });
