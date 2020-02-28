@@ -73,8 +73,8 @@ const testCreateDelete = async () => {
 };
 
 const testRetrieve = async () => {
-  const conn = await auth.login({ username, password });
-  const record = await services.retrieveRecords(
+  const conn = await jsforce.login({ username, password });
+  const record = await jsforce.retrieveRecord(
     conn,
     'Account',
     process.env.SF_ACCOUNT_RECORD_ID,
@@ -83,7 +83,7 @@ const testRetrieve = async () => {
     }
   );
   console.log(record);
-  await auth.logout(conn);
+  await jsforce.logout(conn);
 };
 
 const testUpdate = async () => {
@@ -267,4 +267,4 @@ const recentlyDeleted = async () => {
   await jsforce.logout(conn);
 };
 
-testSoqlQuery();
+testRetrieve();
