@@ -38,6 +38,7 @@ test('Should retrieve multiple records (w/ callback)', async () => {
     conn,
     'Account',
     [process.env.SF_ACCOUNT_RECORD_ID],
+    {},
     (err, res) => {
       expect(res).toBeTruthy();
       expect(err).toBeFalsy();
@@ -53,7 +54,8 @@ test('Should retrieve multiple records (w/out callback)', async () => {
   const retrieveResult = await retrieveMultipleRecords(
     conn,
     'Account',
-    [process.env.SF_ACCOUNT_RECORD_ID]
+    [process.env.SF_ACCOUNT_RECORD_ID],
+    {}
   );
   expect(retrieveResult).toBeTruthy();
 });
