@@ -165,25 +165,14 @@ const testQueryAndDelete = async () => {
 };
 
 const testSoqlQuery = async () => {
-  const conn = await auth.login({ username, password });
-  const records = await query.soqlQuery(
+  const conn = await jsforce.login({ username, password });
+  const records = await jsforce.soqlQuery(
     conn,
     'Contact',
-    {
-      conditions: {
-        Name: { $like: 'A%' }
-      },
-      fields: '*, Account.*',
-      options: {
-        limit: 5
-      }
-    },
-    (err, recs) => {
-      console.log(err, recs);
-    }
+    {}
   );
   console.log(records.length);
-  await auth.logout(conn);
+  await jsforce.logout(conn);
 };
 
 const testFindOne = async () => {
@@ -278,4 +267,4 @@ const recentlyDeleted = async () => {
   await jsforce.logout(conn);
 };
 
-testIdentity();
+testSoqlQuery();

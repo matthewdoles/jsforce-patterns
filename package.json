@@ -17,7 +17,7 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": {
-    "test": "jest --coverage --setupFiles dotenv/config",
+    "test": "jest",
     "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls",
     "start": "node index.js",
     "dev": "nodemon ./test/examples.js"
