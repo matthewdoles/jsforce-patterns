@@ -6,7 +6,7 @@ test('Should describe Account object (w/ callback)', async () => {
     password: process.env.SF_PASSWORD
   });
 
-  describeObject(conn, 'Account', (err, meta) => {
+  await describeObject(conn, 'Account', (err, meta) => {
     expect(meta.label).toBeTruthy();
     expect(meta.fields).toBeTruthy();
   });

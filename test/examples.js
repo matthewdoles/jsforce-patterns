@@ -278,4 +278,4 @@ const recentlyDeleted = async () => {
   await jsforce.logout(conn);
 };
 
-testDescribeGlobal();
+testIdentity();
