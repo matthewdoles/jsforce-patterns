@@ -1,5 +1,7 @@
 ### JSForce Patterns
-[![Build Status](https://travis-ci.org/matthewdoles/jsforce-patterns.svg?branch=master)](https://travis-ci.org/matthewdoles/jsforce-patterns)
+[![Build Status](https://travis-ci.com/matthewdoles/jsforce-patterns.svg?branch=master)](https://travis-ci.com/matthewdoles/jsforce-patterns)
+
+[![Coverage Status](https://coveralls.io/repos/github/matthewdoles/jsforce-patterns/badge.svg?branch=master)](https://coveralls.io/github/matthewdoles/jsforce-patterns?branch=master)
 
 // TODO: Update documentation
 
