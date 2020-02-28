@@ -1,6 +1,6 @@
 const { login, updateRecord, updateMultipleRecords } = require('../index');
 
-test('Should update record (w/ callbacks)', async () => {
+test('Should update record (w/ callback)', async () => {
   const conn = await login({
     username: process.env.SF_USERNAME,
     password: process.env.SF_PASSWORD
@@ -19,7 +19,7 @@ test('Should update record (w/ callbacks)', async () => {
   );
 });
 
-test('Should update record (w/out callbacks)', async () => {
+test('Should update record (w/out callback)', async () => {
   const conn = await login({
     username: process.env.SF_USERNAME,
     password: process.env.SF_PASSWORD
@@ -35,12 +35,12 @@ test('Should update record (w/out callbacks)', async () => {
   expect(updateResult).toBeTruthy();
 });
 
-test('Should update records (w/ callbacks)', async () => {
+test('Should update multiple records (w/ callback)', async () => {
   const conn = await login({
     username: process.env.SF_USERNAME,
     password: process.env.SF_PASSWORD
   });
-  updateRecord(
+  updateMultipleRecords(
     conn,
     'Account',
     [{
@@ -54,12 +54,12 @@ test('Should update records (w/ callbacks)', async () => {
   );
 });
 
-test('Should update records (w/ callbacks)', async () => {
+test('Should update multiple records (w/out callback)', async () => {
   const conn = await login({
     username: process.env.SF_USERNAME,
     password: process.env.SF_PASSWORD
   });
-  const updateResult = await updateRecord(
+  const updateResult = await updateMultipleRecords(
     conn,
     'Account',
     [{
