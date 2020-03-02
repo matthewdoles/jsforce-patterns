@@ -103,3 +103,83 @@ test('Should create and delete multiple records (w/out callbacks)', async () => 
   ]);
   expect(deleteResult).toBeTruthy();
 });
+
+test('Should fail to create record (w/ callback)', async () => {
+  const conn = await login({
+    username: process.env.SF_USERNAME,
+    password: process.env.SF_PASSWORD
+  });
+
+  const createResult = await createRecord(
+    conn,
+    'Accout',
+    {
+      Name: 'My Account #1'
+    },
+    (err, res) => {
+      expect(err).toBeTruthy();
+      expect(res).toBeUndefined();
+    }
+  );
+  expect(createResult).toBeTruthy();
+});
+
+test('Should fail to create multiple records (w/ callback)', async () => {
+  const conn = await login({
+    username: process.env.SF_USERNAME,
+    password: process.env.SF_PASSWORD
+  });
+
+  const createResult = await createMultipleRecords(
+    conn,
+    'Accout',
+    [{
+      Name: 'My Account #1'
+    }],
+    (err, res) => {
+      expect(err).toBeTruthy();
+      expect(res).toBeUndefined();
+    }
+  );
+  expect(createResult).toBeTruthy();
+});
+
+test('Should fail to delete record', async () => {
+  const conn = await login({
+    username: process.env.SF_USERNAME,
+    password: process.env.SF_PASSWORD
+  });
+
+  const deleteResult = await deleteRecord(
+    conn,
+    'Accout',
+    {
+      Name: 'My Account #1'
+    },
+    (err, res) => {
+      expect(err).toBeTruthy();
+      expect(res).toBeUndefined();
+    }
+  );
+  expect(deleteResult).toBeTruthy();
+});
+
+test('Should fail to delete multiple records', async () => {
+  const conn = await login({
+    username: process.env.SF_USERNAME,
+    password: process.env.SF_PASSWORD
+  });
+
+  const deleteResult = await deleteMultipleRecords(
+    conn,
+    'Accout',
+    [{
+      Name: 'My Account #1'
+    }],
+    (err, res) => {
+      expect(err).toBeTruthy();
+      expect(res).toBeUndefined();
+    }
+  );
+  expect(deleteResult).toBeTruthy();
+});

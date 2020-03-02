@@ -45,7 +45,6 @@ test('Should update multiple records (w/ callback)', async () => {
         Name: 'Test Account Name'
       }
     ],
-    {},
     (err, res) => {
       expect(res).toBeTruthy();
       expect(err).toBeFalsy();
@@ -67,7 +66,49 @@ test('Should update multiple records (w/out callback)', async () => {
         Name: 'Test Account Name'
       }
     ],
-    {}
+  );
+  expect(updateResult).toBeTruthy();
+});
+
+test('Should fail to update record ', async () => {
+  const conn = await login({
+    username: process.env.SF_USERNAME,
+    password: process.env.SF_PASSWORD
+  });
+  const updateResult = await updateRecord(
+    conn,
+    'Accout',
+    {
+      Id: process.env.SF_ACCOUNT_RECORD_ID,
+      Name: 'Test Account Name'
+    },
+    (err, res) => {
+      expect(err).toBeTruthy();
+      expect(res).toBeUndefined();
+    }
+  );
+  expect(updateResult).toBeTruthy();
+});
+
+test('Should fail to retrieve multiple records (w/ callback)', async () => {
+  const conn = await login({
+    username: process.env.SF_USERNAME,
+    password: process.env.SF_PASSWORD
+  });
+
+  const updateResult = await updateMultipleRecords(
+    conn,
+    'Accout',
+    [
+      {
+        Id: process.env.SF_ACCOUNT_RECORD_ID,
+        Name: 'Test Account Name'
+      }
+    ],
+    (err, res) => {
+      expect(err).toBeTruthy();
+      expect(res).toBeUndefined();
+    }
   );
   expect(updateResult).toBeTruthy();
 });

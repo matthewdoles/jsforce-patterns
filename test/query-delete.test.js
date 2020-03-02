@@ -37,3 +37,27 @@ test('Should query and delete records (w/out callback)', async () => {
   });
   expect(deleteResult).toBeTruthy();
 });
+
+test('Should query and delete records (w/ callback)', async () => {
+  const conn = await login({
+    username: process.env.SF_USERNAME,
+    password: process.env.SF_PASSWORD
+  });
+
+  await createRecord(conn, 'Account', {
+    Name: 'My Delete Account #1'
+  });
+
+  const deleteResult = await queryAndDeleteRecords(
+    conn,
+    'Accout',
+    {
+      Name: 'My Delete Account #1'
+    },
+    (err, res) => {
+      expect(err).toBeTruthy();
+      expect(res).toBeUndefined();
+    }
+  );
+  expect(deleteResult).toBeTruthy();
+});
