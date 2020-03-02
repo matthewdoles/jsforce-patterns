@@ -48,8 +48,8 @@ const execute = async () => {
 };
 
 const testCreateDelete = async () => {
-  const conn = await auth.login({ username, password });
-  const createResult = await services.createRecord(
+  const conn = await jsforce.login({ username, password });
+  const createResult = await jsforce.createRecord(
     conn,
     'Account',
     {
@@ -60,7 +60,7 @@ const testCreateDelete = async () => {
     }
   );
   console.log(createResult);
-  const deleteResult = await services.deleteRecord(
+  const deleteResult = await jsforce.deleteRecord(
     conn,
     'Account',
     createResult.id,
@@ -69,14 +69,14 @@ const testCreateDelete = async () => {
     }
   );
   console.log(deleteResult);
-  await auth.logout(conn);
+  await jsforce.logout(conn);
 };
 
 const testRetrieve = async () => {
   const conn = await jsforce.login({ username, password });
-  const record = await jsforce.retrieveRecord(
+  const record = await jsforce.retrieveMultipleRecords(
     conn,
-    'Account',
+    'Accoun',
     process.env.SF_ACCOUNT_RECORD_ID,
     (err, rec) => {
       console.log(err, rec);
@@ -104,8 +104,8 @@ const testUpdate = async () => {
 };
 
 const testQueryAndUpdate = async () => {
-  const conn = await auth.login({ username, password });
-  const result = await services.queryAndUpdateRecords(
+  const conn = await jsforce.login({ username, password });
+  const result = await jsforce.queryAndUpdateRecords(
     conn,
     'Contact',
     {
@@ -119,12 +119,12 @@ const testQueryAndUpdate = async () => {
     }
   );
   console.log(result);
-  await auth.logout(conn);
+  await jsforce.logout(conn);
 };
 
 const testQueryAndUpdateWithFunction = async () => {
-  const conn = await auth.login({ username, password });
-  const result = await services.queryAndUpdateRecords(
+  const conn = await jsforce.login({ username, password });
+  const result = await jsforce.queryAndUpdateRecords(
     conn,
     'Contact',
     {
@@ -139,7 +139,7 @@ const testQueryAndUpdateWithFunction = async () => {
     }
   );
   console.log(result);
-  await auth.logout(conn);
+  await jsforce.logout(conn);
 };
 
 const testQueryAndDelete = async () => {
@@ -267,4 +267,4 @@ const recentlyDeleted = async () => {
   await jsforce.logout(conn);
 };
 
-testRetrieve();
+testQueryAndUpdateWithFunction();
