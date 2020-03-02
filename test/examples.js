@@ -73,7 +73,10 @@ const testCreateDelete = async () => {
 };
 
 const testRetrieve = async () => {
-  const conn = await jsforce.login({ username, password });
+  const conn = await jsforce.login({ username, password}, (err, res) => {
+    console.log(err, res)
+  });
+  console.log(conn)
   const record = await jsforce.retrieveRecord(
     conn,
     'Account',
@@ -82,7 +85,7 @@ const testRetrieve = async () => {
       console.log(rec);
     }
   );
-  //console.log(record);
+  console.log(record);
   await jsforce.logout(conn);
 };
 

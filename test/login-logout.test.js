@@ -1,6 +1,6 @@
 const { login, logout } = require('../index');
 
-test('Should login and logiut user (w/ callbacks)', async () => {
+test('Should login and logout user (w/ callbacks)', async () => {
   const conn = await login(
     {
       username: process.env.SF_USERNAME,
@@ -17,7 +17,7 @@ test('Should login and logiut user (w/ callbacks)', async () => {
   });
 });
 
-test('Should login and logiut user (w/out callbacks)', async () => {
+test('Should login and logout user (w/out callbacks)', async () => {
   const conn = await login({
     username: process.env.SF_USERNAME,
     password: process.env.SF_PASSWORD
@@ -27,4 +27,17 @@ test('Should login and logiut user (w/out callbacks)', async () => {
   setTimeout(() => {
     logout(conn);
   }, 2000);
+});
+
+test('Should fail to login user', async () => {
+  const conn = await login(
+    {
+      username: 'a',
+      password: process.env.SF_PASSWORD
+    },
+    (err, res) => {
+      expect(err).toBeTruthy();
+      expect(res).toBeFalsy();
+    }
+  );
 });
