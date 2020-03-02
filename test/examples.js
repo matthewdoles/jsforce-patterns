@@ -73,10 +73,10 @@ const testCreateDelete = async () => {
 };
 
 const testRetrieve = async () => {
-  const conn = await jsforce.login({ username, password}, (err, res) => {
-    console.log(err, res)
+  const conn = await jsforce.login({ username, password }, (err, res) => {
+    console.log(err, res);
   });
-  console.log(conn)
+  console.log(conn);
   const record = await jsforce.retrieveRecord(
     conn,
     'Account',
@@ -169,11 +169,7 @@ const testQueryAndDelete = async () => {
 
 const testSoqlQuery = async () => {
   const conn = await jsforce.login({ username, password });
-  const records = await jsforce.soqlQuery(
-    conn,
-    'Contact',
-    {}
-  );
+  const records = await jsforce.soqlQuery(conn, 'Contact', {});
   console.log(records.length);
   await jsforce.logout(conn);
 };
@@ -210,8 +206,10 @@ const testSoslSearch = async () => {
 
 const testDescribeObject = async () => {
   const conn = await jsforce.login({ username, password });
-  const meta = await jsforce.describeObject(conn, 'Account');
-  console.log(meta)
+  const meta = await jsforce.describeObject(conn, 'Account', (err, res) => {
+    console.log(err, res);
+  });
+  console.log(meta);
   await jsforce.logout(conn);
 };
 
@@ -270,4 +268,4 @@ const recentlyDeleted = async () => {
   await jsforce.logout(conn);
 };
 
-testRetrieve();
+testDescribeObject();
