@@ -1,6 +1,6 @@
 const { login, createRecord, queryAndDeleteRecords } = require('../index');
 
-test('Should query and delete records (w/ callback)', async () => {
+test('Should query and delete records', async () => {
   const conn = await login({
     username: process.env.SF_USERNAME,
     password: process.env.SF_PASSWORD
@@ -10,7 +10,7 @@ test('Should query and delete records (w/ callback)', async () => {
     Name: 'My Account #1'
   });
 
-  queryAndDeleteRecords(
+  const deleteResult = queryAndDeleteRecords(
     conn,
     'Account',
     {
@@ -21,24 +21,10 @@ test('Should query and delete records (w/ callback)', async () => {
       expect(err).toBeFalsy();
     }
   );
-});
-
-test('Should query and delete records (w/out callback)', async () => {
-  const conn = await login({
-    username: process.env.SF_USERNAME,
-    password: process.env.SF_PASSWORD
-  });
-  await createRecord(conn, 'Account', {
-    Name: 'My Account #1'
-  });
-
-  const deleteResult = await queryAndDeleteRecords(conn, 'Account', {
-    Name: 'My Account #1'
-  });
   expect(deleteResult).toBeTruthy();
 });
 
-test('Should query and delete records (w/ callback)', async () => {
+test('Should fail to query and delete records', async () => {
   const conn = await login({
     username: process.env.SF_USERNAME,
     password: process.env.SF_PASSWORD

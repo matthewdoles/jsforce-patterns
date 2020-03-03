@@ -6,13 +6,13 @@ const {
   soslSearch
 } = require('../index');
 
-test('Should find exactly one Account record (w/ callback)', async () => {
+test('Should find exactly one Account record', async () => {
   const conn = await login({
     username: process.env.SF_USERNAME,
     password: process.env.SF_PASSWORD
   });
 
-  await findOne(
+  const rec = await findOne(
     conn,
     'Account',
     {
@@ -24,29 +24,18 @@ test('Should find exactly one Account record (w/ callback)', async () => {
       expect(err).toBeFalsy();
     }
   );
+  expect(rec).toBeTruthy();
 });
 
-test('Should find exactly one Account record w/ default conditions (w/ callback)', async () => {
+test('Should find exactly one Account record w/ default conditions', async () => {
   const conn = await login({
     username: process.env.SF_USERNAME,
     password: process.env.SF_PASSWORD
   });
 
-  await findOne(conn, 'Account', {}, (err, rec) => {
+  const rec = await findOne(conn, 'Account', {}, (err, rec) => {
     expect(rec).toBeTruthy();
     expect(err).toBeFalsy();
-  });
-});
-
-test('Should find exactly one Account record (w/out callback)', async () => {
-  const conn = await login({
-    username: process.env.SF_USERNAME,
-    password: process.env.SF_PASSWORD
-  });
-
-  const rec = await findOne(conn, 'Account', {
-    conditions: { Name: { $like: 'S%' } },
-    fields: ['Id', 'Name']
   });
   expect(rec).toBeTruthy();
 });
@@ -85,13 +74,13 @@ test('Should fail to find exactly one Account record matching conditions', async
   expect(rec).toBeNull();
 });
 
-test('Should query Contact records (w/ callback)', async () => {
+test('Should query Contact records', async () => {
   const conn = await login({
     username: process.env.SF_USERNAME,
     password: process.env.SF_PASSWORD
   });
 
-  await soqlQuery(
+  const recs =  await soqlQuery(
     conn,
     'Contact',
     {
@@ -108,32 +97,16 @@ test('Should query Contact records (w/ callback)', async () => {
       expect(err).toBeFalsy();
     }
   );
+  expect(recs).toBeTruthy();
 });
 
-test('Should query Contact records w/ default conditions (w/ callback)', async () => {
+test('Should query Contact records w/ default conditions', async () => {
   const conn = await login({
     username: process.env.SF_USERNAME,
     password: process.env.SF_PASSWORD
   });
 
-  await soqlQuery(conn, 'Contact', {});
-});
-
-test('Should query Contact records (w/out callback)', async () => {
-  const conn = await login({
-    username: process.env.SF_USERNAME,
-    password: process.env.SF_PASSWORD
-  });
-
-  const recs = await soqlQuery(conn, 'Contact', {
-    conditions: {
-      Name: { $like: 'A%' }
-    },
-    fields: '*, Account.*',
-    options: {
-      limit: 5
-    }
-  });
+  const recs = await soqlQuery(conn, 'Contact', {});
   expect(recs).toBeTruthy();
 });
 
@@ -181,13 +154,13 @@ test('Should fail to query Contact records matching conditions', async () => {
   expect(recs).toBeNull();
 });
 
-test('Should query Contact records w/ children (w/ callback)', async () => {
+test('Should query Contact records w/ children', async () => {
   const conn = await login({
     username: process.env.SF_USERNAME,
     password: process.env.SF_PASSWORD
   });
 
-  await soqlQueryWithChildren(
+  const recs = await soqlQueryWithChildren(
     conn,
     'Contat',
     {
@@ -206,42 +179,20 @@ test('Should query Contact records w/ children (w/ callback)', async () => {
       expect(err).toBeFalsy();
     }
   );
-});
-
-test('Should query Contact records w/ children (w/out callback)', async () => {
-  const conn = await login({
-    username: process.env.SF_USERNAME,
-    password: process.env.SF_PASSWORD
-  });
-
-  const recs = await soqlQueryWithChildren(
-    conn,
-    'Contact',
-    {
-      conditions: {
-        Name: { $like: 'A%' }
-      },
-      fields: 'notarealfield',
-      options: {
-        limit: 5
-      }
-    },
-    'Cases',
-    {}
-  );
   expect(recs).toBeTruthy();
 });
 
-test('Should query Contact records w/ children w/ default conditions (w/out callback)', async () => {
+test('Should query Contact records w/ children w/ default conditions', async () => {
   const conn = await login({
     username: process.env.SF_USERNAME,
     password: process.env.SF_PASSWORD
   });
 
-  await soqlQueryWithChildren(conn, 'Contact', {}, 'Cases', {}, (err, recs) => {
+  const recs = await soqlQueryWithChildren(conn, 'Contact', {}, 'Cases', {}, (err, recs) => {
     expect(recs).toBeTruthy();
     expect(err).toBeFalsy();
   });
+  expect(recs).toBeTruthy();
 });
 
 test('Should fail to query Contact records w/ children', async () => {
@@ -296,23 +247,7 @@ test('Should fail to query Contact records w/ children matching conditions', asy
   expect(recs).toBeNull();
 });
 
-test('Should execute SOSL Search (w/ callback)', async () => {
-  const conn = await login({
-    username: process.env.SF_USERNAME,
-    password: process.env.SF_PASSWORD
-  });
-
-  await soslSearch(
-    conn,
-    'FIND {Ab*} IN ALL FIELDS RETURNING Account(Id, Name), Lead(Id, Name)',
-    (err, recs) => {
-      expect(recs).toBeTruthy();
-      expect(err).toBeFalsy();
-    }
-  );
-});
-
-test('Should execute SOSL Search (w/out callback)', async () => {
+test('Should execute SOSL Search', async () => {
   const conn = await login({
     username: process.env.SF_USERNAME,
     password: process.env.SF_PASSWORD
@@ -320,7 +255,11 @@ test('Should execute SOSL Search (w/out callback)', async () => {
 
   const recs = await soslSearch(
     conn,
-    'FIND {Ab*} IN ALL FIELDS RETURNING Account(Id, Name), Lead(Id, Name)'
+    'FIND {Ab*} IN ALL FIELDS RETURNING Account(Id, Name), Lead(Id, Name)',
+    (err, recs) => {
+      expect(recs).toBeTruthy();
+      expect(err).toBeFalsy();
+    }
   );
   expect(recs).toBeTruthy();
 });

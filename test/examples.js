@@ -268,4 +268,4 @@ const recentlyDeleted = async () => {
   await jsforce.logout(conn);
 };
 
-testFindOne();
+testDescribeGlobal();

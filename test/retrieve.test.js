@@ -1,11 +1,11 @@
 const { login, retrieveRecord, retrieveMultipleRecords } = require('../index');
 
-test('Should retrieve record (w/ callback)', async () => {
+test('Should retrieve record', async () => {
   const conn = await login({
     username: process.env.SF_USERNAME,
     password: process.env.SF_PASSWORD
   });
-  retrieveRecord(
+  const retrieveResult = retrieveRecord(
     conn,
     'Account',
     process.env.SF_ACCOUNT_RECORD_ID,
@@ -14,51 +14,10 @@ test('Should retrieve record (w/ callback)', async () => {
       expect(err).toBeFalsy();
     }
   );
-});
-
-test('Should retrieve record (w/out callback)', async () => {
-  const conn = await login({
-    username: process.env.SF_USERNAME,
-    password: process.env.SF_PASSWORD
-  });
-  const retrieveResult = await retrieveRecord(
-    conn,
-    'Account',
-    process.env.SF_ACCOUNT_RECORD_ID
-  );
   expect(retrieveResult).toBeTruthy();
 });
 
-test('Should retrieve multiple records (w/ callback)', async () => {
-  const conn = await login({
-    username: process.env.SF_USERNAME,
-    password: process.env.SF_PASSWORD
-  });
-  retrieveMultipleRecords(
-    conn,
-    'Account',
-    [process.env.SF_ACCOUNT_RECORD_ID],
-    (err, res) => {
-      expect(res).toBeTruthy();
-      expect(err).toBeFalsy();
-    }
-  );
-});
-
-test('Should retrieve multiple records (w/out callback)', async () => {
-  const conn = await login({
-    username: process.env.SF_USERNAME,
-    password: process.env.SF_PASSWORD
-  });
-  const retrieveResult = await retrieveMultipleRecords(
-    conn,
-    'Account',
-    [process.env.SF_ACCOUNT_RECORD_ID]
-  );
-  expect(retrieveResult).toBeTruthy();
-});
-
-test('Should fail to retrieve record ', async () => {
+test('Should fail to retrieve record', async () => {
   const conn = await login({
     username: process.env.SF_USERNAME,
     password: process.env.SF_PASSWORD
@@ -75,7 +34,24 @@ test('Should fail to retrieve record ', async () => {
   expect(retrieveResult).toBeTruthy();
 });
 
-test('Should fail to retrieve multiple records (w/ callback)', async () => {
+test('Should retrieve multiple records', async () => {
+  const conn = await login({
+    username: process.env.SF_USERNAME,
+    password: process.env.SF_PASSWORD
+  });
+  const retrieveResult = retrieveMultipleRecords(
+    conn,
+    'Account',
+    [process.env.SF_ACCOUNT_RECORD_ID],
+    (err, res) => {
+      expect(res).toBeTruthy();
+      expect(err).toBeFalsy();
+    }
+  );
+  expect(retrieveResult).toBeTruthy();
+});
+
+test('Should fail to retrieve multiple records', async () => {
   const conn = await login({
     username: process.env.SF_USERNAME,
     password: process.env.SF_PASSWORD
