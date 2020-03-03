@@ -10,7 +10,7 @@ test('Should query and delete records', async () => {
     Name: 'My Account #1'
   });
 
-  const deleteResult = queryAndDeleteRecords(
+  const deleteResult = await queryAndDeleteRecords(
     conn,
     'Account',
     {

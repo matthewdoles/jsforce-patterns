@@ -39,7 +39,7 @@ test('Should retrieve multiple records', async () => {
     username: process.env.SF_USERNAME,
     password: process.env.SF_PASSWORD
   });
-  const retrieveResult = retrieveMultipleRecords(
+  const retrieveResult = await retrieveMultipleRecords(
     conn,
     'Account',
     [process.env.SF_ACCOUNT_RECORD_ID],
@@ -61,6 +61,7 @@ test('Should fail to retrieve multiple records', async () => {
     conn,
     'Accout',
     [process.env.SF_ACCOUNT_RECORD_ID],
+    {},
     (err, res) => {
       expect(err).toBeTruthy();
       expect(res).toBeUndefined();

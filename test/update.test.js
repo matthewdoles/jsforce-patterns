@@ -76,6 +76,7 @@ test('Should fail to update multiple records', async () => {
         Name: 'Test Account Name'
       }
     ],
+    {},
     (err, res) => {
       expect(err).toBeTruthy();
       expect(res).toBeUndefined();
