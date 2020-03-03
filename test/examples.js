@@ -170,17 +170,17 @@ const testQueryAndDelete = async () => {
 const testSoqlQuery = async () => {
   const conn = await jsforce.login({ username, password });
   const records = await jsforce.soqlQuery(conn, 'Contact', {});
-  console.log(records.length);
+  console.log(records);
   await jsforce.logout(conn);
 };
 
 const testFindOne = async () => {
-  const conn = await auth.login({ username, password });
-  const record = await query.findOne(
+  const conn = await jsforce.login({ username, password });
+  const record = await jsforce.findOne(
     conn,
     'Account',
     {
-      conditions: { Name: { $like: 'S%' } },
+      conditions: { Name: { $like: 'Ssss%' } },
       fields: ['Id', 'Name']
     },
     (err, rec) => {
@@ -188,7 +188,7 @@ const testFindOne = async () => {
     }
   );
   console.log(record);
-  await auth.logout(conn);
+  await jsforce.logout(conn);
 };
 
 const testSoslSearch = async () => {
@@ -268,4 +268,4 @@ const recentlyDeleted = async () => {
   await jsforce.logout(conn);
 };
 
-testDescribeObject();
+testFindOne();
