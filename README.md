@@ -3,207 +3,71 @@
 
 This is a helper extension for [JSForce](https://jsforce.github.io/start/). This library aims to create reusable and dynamic functionality by abstracting repetitively used methods.
 
-## Connection
 
+### Example
+Query for specifc Account record, update record with new random number in Account Name, and verify Account record was updated.
 
-### login(loginOptions, callback)
-Establish a secure connection with targeted Salesforce org.
-
-#### Parameters
-Name | Type | Attributes | Description 
---- | --- | --- | ---
-loginOptions | Object | Required | Parameters to login into Salesforce org.
-callback | Function | Optional | Callback function.
-
-#### Returns
-JSForce.Connection() - necessary to perform any other operations.
-
-#### Example
-Note: May need to append API token to end of password if org has IP Login Ranges.
 ```javascript
-const { login } = require('jsforce-patterns');
+const { login, findOne, updateRecord, logout } = require('jsforce-patterns');
 
-const testLogin = async () => {
-  const conn = login({ 
-    username: 'your username', 
-    password: 'your password' }, 
-    (err, res) => {
-    console.log(res);
-  });
+const execute = async () => {
 
-  // or
-
+  // Login
   const conn = await login({ 
-    username: 'your username', 
-    password: 'your password' 
-  });
-  console.log(conn);
-}
-```
-#### JSForce Doc
-[Username and Password Login](https://jsforce.github.io/document/#username-and-password-login)
-
-
-### logout(conn, callback)
-Logs out and ends the established connection with targeted Salesforce org.
-
-#### Parameters
-Name | Type | Attributes | Description 
---- | --- | --- | ---
-conn | JSForce.Connection() | Required | Valid connection which is to be ended
-callback | Function | Optional | Callback function
-
-#### Returns
-N/A
-
-#### Example
-Note: Callback function only has error parameter, no response.
-```javascript
-const { login, logout } = require('jsforce-patterns');
-
-const testLogout = async () => {
-
-  // Valid connection
-  const conn = await login({ 
-    username: 'your username', 
-    password: 'your password' 
+    username: process.env.SF_USERNAME, 
+    password: process.env.SF_PASSWORD, 
+  }, (err, res) => {
+    if (!err) {
+      console.log('Login successful')
+    }
   });
 
-  logout(conn, err => {
-    console.log(err);
+  // Query
+  console.log('Execute Query...');
+  const record = await findOne(conn, 'Account', {
+    conditions: { Id: process.env.SF_ACCOUNT_RECORD_ID },
+    fields: 'Id, Name'
   });
+  
+  // Results
+  console.log('Current Account Name:', record.Name);
+  const newAccountName = 'Updated Account #' + Math.floor(Math.random() * 1000);
+  console.log('Change Account Name To:', newAccountName);
 
-  // or just...
-
-  logout(conn);
-}
-```
-#### JSForce Doc
-[Logout](https://jsforce.github.io/document/#logout)
-
-
-## Query
-
-
-### findOne(conn, sObject, queryOptions, callback)
-Finds exactly one record mathching search criteria.
-
-#### Parameters
-Name | Type | Attributes | Description 
---- | --- | --- | ---
-conn | JSForce.Connection() | Required | Valid connection which is to be ended.
-queryOptions | Object | Optional | Parameters for search criteria (see below).
-callback | Function | Optional | Callback function.
-
-<b>queryOptions</b>
-
-Name | Type | Default | Description 
---- | --- | --- | ----
-conditions | Object, String	| null, no conditions | Conditions in JSON object (MongoDB-like), or raw SOQL WHERE clause string
-fields | Object, Array< String >, String | Wildcard '*' - selects all fields | Fields to fetch. Format can be in JSON object (MongoDB-like), array of field names, or comma-separated field names.
-filters | Object | - | Additional query filters (see below).
-
-<b>filters</b>
-
-Name | Type | Default | Description 
---- | --- | --- | ----
-limit | Number	| 10 | Maximum number of records the query will return.
-offset | Number | 0 |Offset number where begins returning results.
-skip | Number | 0 | Synonym for offset.
-
-#### Returns
-Record
-
-#### Example
-```javascript
-const { login, findOne, logout } = require('jsforce-patterns');
-
-const testFindOne = async () => {
-  const conn = await login({ 
-    username: 'your username', 
-    password: 'your password' 
-  });
-
-  const record = await findOne(
+  // Update
+  await updateRecord(
     conn,
     'Account',
     {
-      conditions: { Name: { $like: 'S%' } },
-      fields: ['Id', 'Name']
-    },
-    (err, rec) => {
-      console.log(err, rec);
+      Id: record.Id,
+      Name: newAccountName
     }
   );
-  console.log(record);
 
-  await logout(conn);
-}
-```
-#### JSForce Doc
-[findOne](https://jsforce.github.io/jsforce/doc/SObject.html#findOne)
-
-
-### soqlQuery(conn, sObject, queryOptions, callback)
-Finds records mathching search criteria.
-
-#### Parameters
-Name | Type | Attributes | Description 
---- | --- | --- | ---
-conn | JSForce.Connection() | Required | Valid connection which is to be ended.
-sObject | String | Required | SObject to query records from.
-queryOptions | Object | Optional | Parameters for search criteria (see below).
-callback | Function | Optional | Callback function.
-
-<b>queryOptions</b>
-
-Name | Type | Default | Description 
---- | --- | --- | ----
-conditions | Object, String	| null, no conditions | Conditions in JSON object (MongoDB-like), or raw SOQL WHERE clause string
-fields | Object, Array< String >, String | Wildcard '*' - selects all fields | Fields to fetch. Format can be in JSON object (MongoDB-like), array of field names, or comma-separated field names.
-filters | Object | - | Additional query filters (see below).
-
-<b>filters</b>
-
-Name | Type | Default | Description 
---- | --- | --- | ----
-limit | Number	| 10 | Maximum number of records the query will return.
-offset | Number | 0 |Offset number where begins returning results.
-skip | Number | 0 | Synonym for offset.
-
-#### Returns
-Array< Record >
-
-#### Example
-```javascript
-const { login, soqlQuery, logout } = require('jsforce-patterns');
-
-const testSOQLQuery = async () => {
-  const conn = await login({ 
-    username: 'your username', 
-    password: 'your password' 
+  // Verify
+  console.log('Execute Query...');
+  const record = await findOne(conn, 'Account', {
+    conditions: { Id: process.env.SF_ACCOUNT_RECORD_ID },
+    fields: 'Id, Name'
   });
+  console.log('Updated Account Name:'), updatedRecord.Name);
 
-  const records = await soqlQuery(
-    conn,
-    'Contact',
-    {
-      conditions: {
-        Name: { $like: 'A%' }
-      },
-        fields: 'Id, Name, Phone',
-        options: {
-          limit: 5
-      }
-    },
-    (err, recs) => {
-      console.log(recs);
+  // Logout
+  await logout(conn, err => {
+    if (!err) {
+      console.log('Logout successful!')
     }
-  );
-  console.log(records);
-
-  await logout(conn);
-}
+  });
+};
 ```
-#### JSForce Doc
-[Query Method-Chain](https://jsforce.github.io/document/#using-query-method-chain)
+
+<b>Execution:</b>
+```
+Login Successful!
+Execute Query...
+Current Account Name: Updated Account #631
+Change Account Name To: Updated Account #768
+Execute Query...
+Updated Account Name: Updated Account #768
+Logout Successful!
+```

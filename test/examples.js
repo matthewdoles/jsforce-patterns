@@ -6,41 +6,34 @@ const password = process.env.SF_PASSWORD;
 
 const execute = async () => {
   // Login
-  const conn = await jsforce.login({ username, password });
+  const conn = await jsforce.login({ username, password }, (err, res) => {
+    if (!err) {
+      console.log('Login successful');
+    }
+  });
 
   // Query
   console.log(chalk.bold.red('Execute Query...'));
-  const record = await jsforce.findOne(
-    conn,
-    'Account',
-    process.env.SF_ACCOUNT_RECORD_ID,
-    'Id, Name'
-  );
+  const record = await jsforce.findOne(conn, 'Account', {
+    conditions: { Id: process.env.SF_ACCOUNT_RECORD_ID },
+    fields: 'Id, Name'
+  });
   console.log(chalk.cyan('Current Account Name:'), record.Name);
   const newAccountName = 'Updated Account #' + Math.floor(Math.random() * 1000);
   console.log(chalk.cyan('Change Account Name To:'), newAccountName);
 
   // Update
-  await jsforce.updateMultipleRecords(
-    conn,
-    'Account',
-    [
-      {
-        Id: record.Id,
-        Name: newAccountName
-      }
-    ],
-    { allOrNone: true, allowRecursive: true }
-  );
+  await jsforce.updateRecord(conn, 'Account', {
+    Id: record.Id,
+    Name: newAccountName
+  });
 
   // Verify
   console.log(chalk.bold.red('Execute Query...'));
-  const updatedRecord = await jsforce.findOne(
-    conn,
-    'Account',
-    record.Id,
-    'Id, Name'
-  );
+  const updatedRecord = await jsforce.findOne(conn, 'Account', {
+    conditions: { Id: process.env.SF_ACCOUNT_RECORD_ID },
+    fields: 'Id, Name'
+  });
   console.log(chalk.cyan('Updated Account Name:'), updatedRecord.Name);
 
   // Logout
@@ -268,4 +261,4 @@ const recentlyDeleted = async () => {
   await jsforce.logout(conn);
 };
 
-testDescribeGlobal();
+execute();
