@@ -23,20 +23,22 @@ Note: May need to append API token to end of password if org has IP Login Ranges
 ```javascript
 const { login } = require('jsforce-patterns');
 
-const conn = login({ 
-  username: 'your username', 
-  password: 'your password' }, 
-  (err, res) => {
-  console.log(res);
-});
+const testLogin = async () => {
+  const conn = login({ 
+    username: 'your username', 
+    password: 'your password' }, 
+    (err, res) => {
+    console.log(res);
+  });
 
-// or
+  // or
 
-const conn = await login({ 
-  username: 'your username', 
-  password: 'your password' 
-});
-console.log(conn);
+  const conn = await login({ 
+    username: 'your username', 
+    password: 'your password' 
+  });
+  console.log(conn);
+}
 ```
 #### JSForce Doc
 [Username and Password Login](https://jsforce.github.io/document/#username-and-password-login)
@@ -59,20 +61,22 @@ Note: Callback function only has error parameter, no response.
 ```javascript
 const { login, logout } = require('jsforce-patterns');
 
-// Valid connection
-const conn = await login({ 
-  username: 'your username', 
-  password: 'your password' 
-});
+const testLogout = async () => {
 
-logout(conn, err => {
-  console.log(err);
-});
+  // Valid connection
+  const conn = await login({ 
+    username: 'your username', 
+    password: 'your password' 
+  });
 
-// or just...
+  logout(conn, err => {
+    console.log(err);
+  });
 
-logout(conn);
+  // or just...
 
+  logout(conn);
+}
 ```
 #### JSForce Doc
 [Logout](https://jsforce.github.io/document/#logout)
@@ -96,8 +100,8 @@ callback | Function | Optional | Callback function.
 Name | Type | Default | Description 
 --- | --- | --- | ----
 conditions | Object, String	| null, no conditions | Conditions in JSON object (MongoDB-like), or raw SOQL WHERE clause string
-fields | Object, Array<String>, String | Wildcard (*), selects all fields | Fields to fetch. Format can be in JSON object (MongoDB-like), array of field names, or comma-separated field names.
-filters | Object | See filters Properties | Additional query filters (see below).
+fields | Object, Array< String >, String | Wildcard '*' - selects all fields | Fields to fetch. Format can be in JSON object (MongoDB-like), array of field names, or comma-separated field names.
+filters | Object | - | Additional query filters (see below).
 
 <b>filters</b>
 
@@ -105,7 +109,7 @@ Name | Type | Default | Description
 --- | --- | --- | ----
 limit | Number	| 10 | Maximum number of records the query will return.
 offset | Number | 0 |Offset number where begins returning results.
-skip | Number | 0 | Synonym of options.offset.
+skip | Number | 0 | Synonym for offset.
 
 #### Returns
 Record
@@ -114,26 +118,92 @@ Record
 ```javascript
 const { login, findOne, logout } = require('jsforce-patterns');
 
-const conn = await login({ 
-  username: 'your username', 
-  password: 'your password' 
-});
+const testFindOne = async () => {
+  const conn = await login({ 
+    username: 'your username', 
+    password: 'your password' 
+  });
 
-const record = await findOne(
-  conn,
-  'Account',
-  {
-    conditions: { Name: { $like: 'S%' } },
-    fields: ['Id', 'Name']
-  },
-  (err, rec) => {
-    console.log(err, rec);
-  }
-);
-console.log(record);
+  const record = await findOne(
+    conn,
+    'Account',
+    {
+      conditions: { Name: { $like: 'S%' } },
+      fields: ['Id', 'Name']
+    },
+    (err, rec) => {
+      console.log(err, rec);
+    }
+  );
+  console.log(record);
 
-await logout(conn);
-
+  await logout(conn);
+}
 ```
 #### JSForce Doc
 [findOne](https://jsforce.github.io/jsforce/doc/SObject.html#findOne)
+
+
+### soqlQuery(conn, sObject, queryOptions, callback)
+Finds records mathching search criteria.
+
+#### Parameters
+Name | Type | Attributes | Description 
+--- | --- | --- | ---
+conn | JSForce.Connection() | Required | Valid connection which is to be ended.
+sObject | String | Required | SObject to query records from.
+queryOptions | Object | Optional | Parameters for search criteria (see below).
+callback | Function | Optional | Callback function.
+
+<b>queryOptions</b>
+
+Name | Type | Default | Description 
+--- | --- | --- | ----
+conditions | Object, String	| null, no conditions | Conditions in JSON object (MongoDB-like), or raw SOQL WHERE clause string
+fields | Object, Array< String >, String | Wildcard '*' - selects all fields | Fields to fetch. Format can be in JSON object (MongoDB-like), array of field names, or comma-separated field names.
+filters | Object | - | Additional query filters (see below).
+
+<b>filters</b>
+
+Name | Type | Default | Description 
+--- | --- | --- | ----
+limit | Number	| 10 | Maximum number of records the query will return.
+offset | Number | 0 |Offset number where begins returning results.
+skip | Number | 0 | Synonym for offset.
+
+#### Returns
+Array< Record >
+
+#### Example
+```javascript
+const { login, soqlQuery, logout } = require('jsforce-patterns');
+
+const testSOQLQuery = async () => {
+  const conn = await login({ 
+    username: 'your username', 
+    password: 'your password' 
+  });
+
+  const records = await soqlQuery(
+    conn,
+    'Contact',
+    {
+      conditions: {
+        Name: { $like: 'A%' }
+      },
+        fields: 'Id, Name, Phone',
+        options: {
+          limit: 5
+      }
+    },
+    (err, recs) => {
+      console.log(recs);
+    }
+  );
+  console.log(records);
+
+  await logout(conn);
+}
+```
+#### JSForce Doc
+[Query Method-Chain](https://jsforce.github.io/document/#using-query-method-chain)
