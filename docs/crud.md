@@ -289,3 +289,94 @@ const testUpdateMultipleRecords = async () => {
 ```
 #### JSForce Doc
 [Update](https://jsforce.github.io/document/#update)
+
+## deleteRecord(conn, sObject, recordId, callback)
+Delete record of provided Id.
+
+#### Parameters
+Name | Type | Attributes | Description 
+--- | --- | --- | ---
+conn | JSForce.Connection() | Required | Valid Salesforce connection.
+sObject | String | Required | SObject of the record to be retrieved.
+recordId | Object | Required | Id of record to delete.
+callback | Function | Optional | Callback function.
+
+#### Returns
+RecordResult
+
+#### Example
+```javascript
+const { login, deleteRecord, logout } = require('jsforce-patterns');
+
+const testDeleteRecord = async () => {
+  const conn = await login({ 
+    username: 'your username', 
+    password: 'your password' 
+  });
+
+  const deleteResult = await jsforce.deleteRecord(
+    conn,
+    'Account',
+    'account-record-id',
+    (err, res) => {
+      console.log(err, res);
+    }
+  );
+  console.log(deleteResult);
+
+  await logout(conn);
+}
+```
+#### JSForce Doc
+[Delete](https://jsforce.github.io/document/#delete)
+
+## deleteMultipleRecords(conn, sObject, records, options, callback)
+Delete records of provided Ids.
+
+#### Parameters
+Name | Type | Attributes | Description 
+--- | --- | --- | ---
+conn | JSForce.Connection() | Required | Valid Salesforce connection.
+sObject | String | Required | SObject of the records to be deleted.
+records | Array(String) | Required | Array of records Ids to be deleted.
+options | Object | Optional | Options for handling operation (see below).
+callback | Function | Optional | Callback function.
+
+<b>options</b>
+
+Name | Type | Default | Description 
+--- | --- | --- | ---
+allOrNone | Boolean	| false | If any records fail to delete, rollback all delete records.
+allowRecursive | Boolean | false | Set to true when delete more than 200 records to avoid governor limits.
+
+For more info: [Operation Options](https://jsforce.github.io/document/#operation-options)
+
+#### Returns
+Array(RecordResult)
+
+#### Example
+```javascript
+const { login, deleteMultipleRecords, logout } = require('jsforce-patterns');
+
+const testDeleteMultipleRecords = async () => {
+  const conn = await login({ 
+    username: 'your username', 
+    password: 'your password' 
+  });
+
+  const deleteResult = await deleteMultipleRecords(
+    conn,
+    'Account',
+    ['account-record-id-1', 'account-record-id-2'],
+    { allOrNone: true },
+    (err, res) => {
+      console.log(res);
+    }
+  );
+  console.log(deleteResult);
+
+  await logout(conn);
+}
+```
+#### JSForce Doc
+[Delete](https://jsforce.github.io/document/#delete)
