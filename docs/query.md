@@ -4,7 +4,7 @@ Finds exactly one record mathching search criteria.
 #### Parameters
 Name | Type | Attributes | Description 
 --- | --- | --- | ---
-conn | JSForce.Connection() | Required | Valid connection which is to be ended.
+conn | JSForce.Connection() | Required | Valid Salesforce connection.
 queryOptions | Object | Required | Parameters for search criteria (see below).
 callback | Function | Optional | Callback function.
 
@@ -12,8 +12,8 @@ callback | Function | Optional | Callback function.
 
 Name | Type | Default | Description 
 --- | --- | --- | ----
-conditions | Object, String	| null, no conditions | Conditions in JSON object (MongoDB-like), or raw SOQL WHERE clause string
-fields | Object, Array< String >, String | Wildcard '*' - selects all fields | Fields to fetch. Format can be in JSON object (MongoDB-like), array of field names, or comma-separated field names.
+conditions | Object, String	| null - no conditions | Conditions in JSON object (MongoDB-like), or raw SOQL WHERE clause string.
+fields | Object, Array(String), String | * - wildcard selects all fields | Fields to fetch. Format can be in JSON object (MongoDB-like), array of field names, or comma-separated field names.
 filters | Object | - | Additional query filters (see below).
 
 <b>filters</b>
@@ -63,7 +63,7 @@ Finds records mathching search criteria.
 #### Parameters
 Name | Type | Attributes | Description 
 --- | --- | --- | ---
-conn | JSForce.Connection() | Required | Valid connection which is to be ended.
+conn | JSForce.Connection() | Required | Valid Salesforce connection.
 sObject | String | Required | SObject to query records from.
 queryOptions | Object | Required | Parameters for search criteria (see below).
 callback | Function | Optional | Callback function.
@@ -72,8 +72,8 @@ callback | Function | Optional | Callback function.
 
 Name | Type | Default | Description 
 --- | --- | --- | ----
-conditions | Object, String	| null, no conditions | Conditions in JSON object (MongoDB-like), or raw SOQL WHERE clause string
-fields | Object, Array< String >, String | *, wildcard selects all fields | Fields to fetch. Format can be in JSON object (MongoDB-like), array of field names, or comma-separated field names.
+conditions | Object, String	| null - no conditions | Conditions in JSON object (MongoDB-like), or raw SOQL WHERE clause string.
+fields | Object, Array(String), String | * - wildcard selects all fields | Fields to fetch. Format can be in JSON object (MongoDB-like), array of field names, or comma-separated field names.
 filters | Object | - | Additional query filters (see below).
 
 <b>filters</b>
@@ -85,7 +85,7 @@ offset | Number | 0 |Offset number where begins returning results.
 skip | Number | 0 | Synonym for offset.
 
 #### Returns
-Array< Record >
+Array(Record)
 
 #### Example
 ```javascript
@@ -122,12 +122,12 @@ const testSOQLQuery = async () => {
 [Query Method-Chain](https://jsforce.github.io/document/#using-query-method-chain)
 
 ## soqlQueryWithChildren(conn, parentObject, parentOptions, childObject, childOptions, callback)
-Finds records mathching search criteria.
+Finds records mathching search criteria, and any children records of those records matching another set of search criteria.
 
 #### Parameters
 Name | Type | Attributes | Description 
 --- | --- | --- | ---
-conn | JSForce.Connection() | Required | Valid connection which is to be ended.
+conn | JSForce.Connection() | Required | Valid Salesforce connection.
 sObject | String | Required | SObject to query records from.
 parentOptions | Object | Required | Parameters for search criteria (see below).
 childObject | String | Required | Child SObject of parent to query records from.
@@ -138,8 +138,8 @@ callback | Function | Optional | Callback function.
 
 Name | Type | Default | Description 
 --- | --- | --- | ----
-conditions | Object, String	| null, no conditions | Conditions in JSON object (MongoDB-like), or raw SOQL WHERE clause string
-fields | Object, Array< String >, String | Wildcard '*' - selects all fields | Fields to fetch. Format can be in JSON object (MongoDB-like), array of field names, or comma-separated field names.
+conditions | Object, String	| null - no conditions | Conditions in JSON object (MongoDB-like), or raw SOQL WHERE clause string.
+fields | Object, Array(String), String | * - wildcard selects all fields | Fields to fetch. Format can be in JSON object (MongoDB-like), array of field names, or comma-separated field names.
 filters | Object | - | Additional query filters (see below).
 
 <b>filters</b>
@@ -151,13 +151,13 @@ offset | Number | 0 |Offset number where begins returning results.
 skip | Number | 0 | Synonym for offset.
 
 #### Returns
-Array< Record >
+Array(Record)
 
 #### Example
 ```javascript
 const { login, soqlQueryWithChildren, logout } = require('jsforce-patterns');
 
-const testSOQLQuery = async () => {
+const testSOQLQueryWithChildren = async () => {
   const conn = await login({ 
     username: 'your username', 
     password: 'your password' 
@@ -188,3 +188,41 @@ const testSOQLQuery = async () => {
 ```
 #### JSForce Doc
 Sub-section of [Query Method-Chain](https://jsforce.github.io/document/#using-query-method-chain)
+
+## soslSearch(conn, query, callback)
+Executes defined SOSL search and returns results.
+
+#### Parameters
+Name | Type | Attributes | Description 
+--- | --- | --- | ---
+conn | JSForce.Connection() | Required | Valid Salesforce connection.
+query | String | Required | Valid SOSL query.
+callback | Function | Optional | Callback function.
+
+#### Returns
+Array(RecordResult)
+
+#### Example
+```javascript
+const { login, soslSearch, logout } = require('jsforce-patterns');
+
+const testSoslSearch = async () => {
+  const conn = await login({ 
+    username: 'your username', 
+    password: 'your password' 
+  });
+
+  const records = await query.soslSearch(
+    conn,
+    'FIND {Ab*} IN ALL FIELDS RETURNING Account(Id, Name), Lead(Id, Name)',
+    (err, recs) => {
+      console.log(err, recs);
+    }
+  );
+  console.log(records.length);
+
+  await logout(conn);
+}
+```
+#### JSForce Doc
+[search](https://jsforce.github.io/document/#search)
