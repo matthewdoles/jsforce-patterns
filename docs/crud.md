@@ -47,7 +47,7 @@ Creates provided records.
 Name | Type | Attributes | Description 
 --- | --- | --- | ---
 conn | JSForce.Connection() | Required | Valid Salesforce connection.
-sObject | String | Required | SObject of the record to be created.
+sObject | String | Required | SObject of the records to be created.
 records | Array(Object) | Required | Array of objects including record field information.
 options | Object | Optional | Options for handling operation (see below).
 callback | Function | Optional | Callback function.
@@ -57,7 +57,7 @@ callback | Function | Optional | Callback function.
 Name | Type | Default | Description 
 --- | --- | --- | ---
 allOrNone | Boolean	| false | If any records fail to insert, rollback all created records.
-allowRecursive | Boolean | false | Set to true when inserting more that 200 records to avoid governor limits.
+allowRecursive | Boolean | false | Set to true when inserting more than 200 records to avoid governor limits.
 
 For more info: [Operation Options](https://jsforce.github.io/document/#operation-options)
 
@@ -125,7 +125,7 @@ const testRetrieveRecord = async () => {
   const record = await jsforce.retrieveRecord(
     conn,
     'Account',
-    'valid-account-record-id',
+    'account-record-id',
     (err, rec) => {
       console.log(rec);
     }
@@ -174,7 +174,7 @@ const testRetrieveMultipleRecords = async () => {
   const records = await retrieveMultipleRecords(
     conn,
     'Account',
-    ['valid-account-record-id-1', 'valid-account-record-id-2'],
+    ['account-record-id-1', 'account-record-id-2'],
     (err, res) => {
       console.log(err, res);
     }
@@ -186,3 +186,106 @@ const testRetrieveMultipleRecords = async () => {
 ```
 #### JSForce Doc
 [Retrieve](https://jsforce.github.io/document/#retrieve)
+
+## updateRecord(conn, sObject, record, callback)
+Update record with provided Id and field information.
+
+#### Parameters
+Name | Type | Attributes | Description 
+--- | --- | --- | ---
+conn | JSForce.Connection() | Required | Valid Salesforce connection.
+sObject | String | Required | SObject of the record to be retrieved.
+record | Object | Required | Object including record field information (must include Id).
+callback | Function | Optional | Callback function.
+
+#### Returns
+RecordResult
+
+#### Example
+```javascript
+const { login, updateRecord, logout } = require('jsforce-patterns');
+
+const testUpdateRecord = async () => {
+  const conn = await login({ 
+    username: 'your username', 
+    password: 'your password' 
+  });
+
+  const result = await updateRecord(
+    conn,
+    'Account',
+    {
+      Id: 'account-record-id',
+      Name: 'Test Account Name'
+    },
+    (err, res) => {
+      console.log(err, res);
+    }
+  );
+  console.log(result);
+
+  await logout(conn);
+}
+```
+#### JSForce Doc
+[Update](https://jsforce.github.io/document/#update)
+
+## updateMultipleRecords(conn, sObject, records, options, callback)
+Update records with provided Ids and field information
+
+#### Parameters
+Name | Type | Attributes | Description 
+--- | --- | --- | ---
+conn | JSForce.Connection() | Required | Valid Salesforce connection.
+sObject | String | Required | SObject of the records to be updated.
+records | Array(Object) | Required | Array of objects with record field information (must include Id).
+options | Object | Optional | Options for handling operation (see below).
+callback | Function | Optional | Callback function.
+
+<b>options</b>
+
+Name | Type | Default | Description 
+--- | --- | --- | ---
+allOrNone | Boolean	| false | If any records fail to update, rollback all updated records.
+allowRecursive | Boolean | false | Set to true when updating more than 200 records to avoid governor limits.
+
+For more info: [Operation Options](https://jsforce.github.io/document/#operation-options)
+
+#### Returns
+Array(RecordResult)
+
+#### Example
+```javascript
+const { login, updateMultipleRecords, logout } = require('jsforce-patterns');
+
+const testUpdateMultipleRecords = async () => {
+  const conn = await login({ 
+    username: 'your username', 
+    password: 'your password' 
+  });
+
+  const updateResult = await updateMultipleRecords(
+    conn,
+    'Accout',
+    [
+      {
+        Id: 'account-record-id-1',
+        Name: 'Test Account Name #1'
+      },
+      {
+        Id: 'account-record-id-2',
+        Name: 'Test Account Name #2'
+      }
+    ],
+    { allOrNone: true },
+    (err, res) => {
+      console.log(res);
+    }
+  );
+  console.log(updateResult);
+
+  await logout(conn);
+}
+```
+#### JSForce Doc
+[Update](https://jsforce.github.io/document/#update)
