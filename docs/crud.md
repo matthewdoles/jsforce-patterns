@@ -40,7 +40,7 @@ const testCreateRecord = async () => {
 #### JSForce Doc
 [Create](https://jsforce.github.io/document/#create)
 
-## createMultipleRecords(conn, sObject, record, options, callback)
+## createMultipleRecords(conn, sObject, records, options, callback)
 Creates provided records.
 
 #### Parameters
@@ -48,16 +48,17 @@ Name | Type | Attributes | Description
 --- | --- | --- | ---
 conn | JSForce.Connection() | Required | Valid Salesforce connection.
 sObject | String | Required | SObject of the record to be created.
-record | Object | Required | Object including record field information.
+records | Array(Object) | Required | Array of objects including record field information.
 options | Object | Optional | Options for handling operation (see below).
 callback | Function | Optional | Callback function.
 
 <b>options</b>
 
 Name | Type | Default | Description 
---- | --- | --- | ----
+--- | --- | --- | ---
 allOrNone | Boolean	| false | If any records fail to insert, rollback all created records.
 allowRecursive | Boolean | false | Set to true when inserting more that 200 records to avoid governor limits.
+
 For more info: [Operation Options](https://jsforce.github.io/document/#operation-options)
 
 #### Returns
@@ -67,7 +68,7 @@ Array(RecordResult)
 ```javascript
 const { login, createMultipleRecords, logout } = require('jsforce-patterns');
 
-const testCreateRecord = async () => {
+const testCreateMultipleRecords = async () => {
   const conn = await login({ 
     username: 'your username', 
     password: 'your password' 
@@ -96,3 +97,92 @@ const testCreateRecord = async () => {
 ```
 #### JSForce Doc
 [Create](https://jsforce.github.io/document/#create)
+
+## retrieveRecord(conn, sObject, recordId, callback)
+Retrieves record with provided Id.
+
+#### Parameters
+Name | Type | Attributes | Description 
+--- | --- | --- | ---
+conn | JSForce.Connection() | Required | Valid Salesforce connection.
+sObject | String | Required | SObject of the record to be retrieved.
+recordId | String | Required | Record Id of record to retrieve.
+callback | Function | Optional | Callback function.
+
+#### Returns
+Record
+
+#### Example
+```javascript
+const { login, retrieveRecord, logout } = require('jsforce-patterns');
+
+const testRetrieveRecord = async () => {
+  const conn = await login({ 
+    username: 'your username', 
+    password: 'your password' 
+  });
+
+  const record = await jsforce.retrieveRecord(
+    conn,
+    'Account',
+    'valid-account-record-id',
+    (err, rec) => {
+      console.log(rec);
+    }
+  );
+  console.log(record);
+
+  await logout(conn);
+}
+```
+#### JSForce Doc
+[Retrieve](https://jsforce.github.io/document/#retrieve)
+
+## retrieveMultipleRecords(conn, sObject, recordIds, options, callback)
+Retrieves records with provided Ids.
+
+#### Parameters
+Name | Type | Attributes | Description 
+--- | --- | --- | ---
+conn | JSForce.Connection() | Required | Valid Salesforce connection.
+sObject | String | Required | SObject of the record to be created.
+recordIds | Array(String) | Required | Array of record Ids to retrieve.
+options | Object | Optional | Options for handling operation (see below).
+callback | Function | Optional | Callback function.
+
+<b>options</b>
+
+Name | Type | Default | Description 
+--- | --- | --- | ---
+allowRecursive | Boolean | false | Set to true when retrieveing more that 200 records to avoid governor limits.
+
+For more info: [Operation Options](https://jsforce.github.io/document/#operation-options)
+
+#### Returns
+Array(Record)
+
+#### Example
+```javascript
+const { login, retrieveMultipleRecords, logout } = require('jsforce-patterns');
+
+const testRetrieveMultipleRecords = async () => {
+  const conn = await login({ 
+    username: 'your username', 
+    password: 'your password' 
+  });
+
+  const records = await retrieveMultipleRecords(
+    conn,
+    'Account',
+    ['valid-account-record-id-1', 'valid-account-record-id-2'],
+    (err, res) => {
+      console.log(err, res);
+    }
+  );
+  console.log(records);
+
+  await logout(conn);
+}
+```
+#### JSForce Doc
+[Retrieve](https://jsforce.github.io/document/#retrieve)
