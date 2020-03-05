@@ -1,7 +1,4 @@
-## Connection
-
-
-### login(loginOptions, callback)
+## login(loginOptions, callback)
 Establish a secure connection with targeted Salesforce org.
 
 #### Parameters
@@ -39,7 +36,7 @@ const testLogin = async () => {
 [Username and Password Login](https://jsforce.github.io/document/#username-and-password-login)
 
 
-### logout(conn, callback)
+## logout(conn, callback)
 Logs out and ends the established connection with targeted Salesforce org.
 
 #### Parameters
