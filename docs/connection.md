@@ -1,4 +1,4 @@
-## login(loginOptions, callback)
+## [login(loginOptions, callback)](#login)
 Establish a secure connection with targeted Salesforce org.
 
 #### Parameters

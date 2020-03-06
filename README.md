@@ -3,6 +3,13 @@
 
 This is a helper extension for [JSForce](https://jsforce.github.io/start/). This library aims to create reusable and dynamic functionality by abstracting repetitively used methods.
 
+### Installation
+```
+npm install jsforce-patterns
+```
+
+### Documentation
+See docs at: https://github.com/matthewdoles/jsforce-patterns/tree/master/docs
 
 ### Example
 Query for specifc Account record, update record with new random number in Account Name, and verify Account record was updated.
