@@ -380,3 +380,91 @@ const testDeleteMultipleRecords = async () => {
 ```
 #### JSForce Doc
 [Delete](https://jsforce.github.io/document/#delete)
+
+## queryAndUpdateRecords(conn, sObject, conditions, updates, callback)
+Query for records matching search criteria and apply defined updates.
+
+#### Parameters
+Name | Type | Attributes | Description 
+--- | --- | --- | ---
+conn | JSForce.Connection() | Required | Valid Salesforce connection.
+sObject | String | Required | SObject of the records to be queried and updated.
+conditions | Object, String	| null - no conditions | Conditions in JSON object (MongoDB-like), or raw SOQL WHERE clause string.
+updates | Object | Optional | Object of fields to update.
+callback | Function | Optional | Callback function.
+
+#### Returns
+Array(RecordResult)
+
+#### Example
+```javascript
+const { login, queryAndUpdateRecords, logout } = require('jsforce-patterns');
+
+const testQueryAndUpdateRecords = async () => {
+  const conn = await login({ 
+    username: 'your username', 
+    password: 'your password' 
+  });
+
+  const updateResults = await queryAndUpdateRecords(
+    conn,
+    'Contact',
+    {
+      Name: { $like: 'A%' }
+    },
+    {
+      Phone: 1234567890
+    },
+    (err, res) => {
+      console.log(res);
+    }
+  );
+  console.log(updateResults);
+
+  await logout(conn);
+}
+```
+#### JSForce Doc
+[Update / Delete Queried Records](https://jsforce.github.io/document/#update-delete-queried-records)
+
+## queryAndDeleteRecords(conn, sObject, conditions, callback)
+Query for records matching search criteria and apply defined updates.
+
+#### Parameters
+Name | Type | Attributes | Description 
+--- | --- | --- | ---
+conn | JSForce.Connection() | Required | Valid Salesforce connection.
+sObject | String | Required | SObject of the records to be queried and updated.
+conditions | Object, String	| null - no conditions | Conditions in JSON object (MongoDB-like), or raw SOQL WHERE clause string.
+callback | Function | Optional | Callback function.
+
+#### Returns
+Array(RecordResult)
+
+#### Example
+```javascript
+const { login, queryAndDeleteRecords, logout } = require('jsforce-patterns');
+
+const testQueryAndDeleteRecords = async () => {
+  const conn = await login({ 
+    username: 'your username', 
+    password: 'your password' 
+  });
+
+  const deleteResult = await queryAndDeleteRecords(
+    conn,
+    'Account',
+    {
+      Name: 'My Account #1'
+    },
+    (err, res) => {
+      console.log(res);
+    }
+  );
+  console.log(deleteResult);
+
+  await logout(conn);
+}
+```
+#### JSForce Doc
+[Update / Delete Queried Records](https://jsforce.github.io/document/#update-delete-queried-records)
