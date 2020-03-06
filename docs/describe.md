@@ -1,4 +1,4 @@
-## describeObject(conn, sObject, callback)
+## describeObject(conn, sObject, callback)<a name="describe-object"></a>
 Fetches SObject metadata.
 
 #### Parameters
@@ -32,7 +32,7 @@ const testDescribeObject = async () => {
 #### JSForce Doc
 [Describe SObject](https://jsforce.github.io/document/#describe-sobject)
 
-## describeGlobal(conn, callback)
+## describeGlobal(conn, callback)<a name="describe-global"></a>
 Returns overview of all SObject information in targeted Salesforce org.
 
 #### Parameters
@@ -65,7 +65,7 @@ const testDescribeGlobal = async () => {
 #### JSForce Doc
 [Describe Global](https://jsforce.github.io/document/#describe-global)
 
-## identity(conn, callback)
+## identity(conn, callback)<a name="identity"></a>
 Returns user identity information.
 
 #### Parameters

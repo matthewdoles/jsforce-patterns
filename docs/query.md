@@ -1,4 +1,4 @@
-## findOne(conn, sObject, queryOptions, callback)
+## findOne(conn, sObject, queryOptions, callback)<a name="find-one"></a>
 Finds exactly one record mathching search criteria.
 
 #### Parameters
@@ -56,8 +56,7 @@ const testFindOne = async () => {
 #### JSForce Doc
 [findOne](https://jsforce.github.io/jsforce/doc/SObject.html#findOne)
 
-
-## soqlQuery(conn, sObject, queryOptions, callback)
+## soqlQuery(conn, sObject, queryOptions, callback)<a name="soql-query"></a>
 Finds records mathching search criteria.
 
 #### Parameters
@@ -121,7 +120,7 @@ const testSOQLQuery = async () => {
 #### JSForce Doc
 [Query Method-Chain](https://jsforce.github.io/document/#using-query-method-chain)
 
-## soqlQueryWithChildren(conn, parentObject, parentOptions, childObject, childOptions, callback)
+## soqlQueryWithChildren(conn, parentObject, parentOptions, childObject, childOptions, callback)<a name="soql-query-with-children"></a>
 Finds records mathching search criteria, and any children records of those records matching another set of search criteria.
 
 #### Parameters
@@ -189,7 +188,7 @@ const testSOQLQueryWithChildren = async () => {
 #### JSForce Doc
 Sub-section of [Query Method-Chain](https://jsforce.github.io/document/#using-query-method-chain)
 
-## soslSearch(conn, query, callback)
+## soslSearch(conn, query, callback)<a name="sosl-search"></a>
 Executes defined SOSL search and returns results.
 
 #### Parameters

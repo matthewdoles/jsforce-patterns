@@ -1,4 +1,4 @@
-## createRecord(conn, sObject, record, callback)
+## createRecord(conn, sObject, record, callback)<a name="create-record"></a>
 Creates provided record.
 
 #### Parameters
@@ -40,7 +40,7 @@ const testCreateRecord = async () => {
 #### JSForce Doc
 [Create](https://jsforce.github.io/document/#create)
 
-## createMultipleRecords(conn, sObject, records, options, callback)
+## createMultipleRecords(conn, sObject, records, options, callback)<a name="create-multiple-records"></a>
 Creates provided records.
 
 #### Parameters
@@ -98,7 +98,7 @@ const testCreateMultipleRecords = async () => {
 #### JSForce Doc
 [Create](https://jsforce.github.io/document/#create)
 
-## retrieveRecord(conn, sObject, recordId, callback)
+## retrieveRecord(conn, sObject, recordId, callback)<a name="retrieve-record"></a>
 Retrieves record with provided Id.
 
 #### Parameters
@@ -138,7 +138,7 @@ const testRetrieveRecord = async () => {
 #### JSForce Doc
 [Retrieve](https://jsforce.github.io/document/#retrieve)
 
-## retrieveMultipleRecords(conn, sObject, recordIds, options, callback)
+## retrieveMultipleRecords(conn, sObject, recordIds, options, callback)<a name="retrieve-multiple-records"></a>
 Retrieves records with provided Ids.
 
 #### Parameters
@@ -187,7 +187,7 @@ const testRetrieveMultipleRecords = async () => {
 #### JSForce Doc
 [Retrieve](https://jsforce.github.io/document/#retrieve)
 
-## updateRecord(conn, sObject, record, callback)
+## updateRecord(conn, sObject, record, callback)<a name="update-record"></a>
 Update record with provided Id and field information.
 
 #### Parameters
@@ -230,7 +230,7 @@ const testUpdateRecord = async () => {
 #### JSForce Doc
 [Update](https://jsforce.github.io/document/#update)
 
-## updateMultipleRecords(conn, sObject, records, options, callback)
+## updateMultipleRecords(conn, sObject, records, options, callback)<a name="update-multiple-records"></a>
 Update records with provided Ids and field information
 
 #### Parameters
@@ -290,7 +290,7 @@ const testUpdateMultipleRecords = async () => {
 #### JSForce Doc
 [Update](https://jsforce.github.io/document/#update)
 
-## deleteRecord(conn, sObject, recordId, callback)
+## deleteRecord(conn, sObject, recordId, callback)<a name="delete-record"></a>
 Delete record of provided Id.
 
 #### Parameters
@@ -330,7 +330,7 @@ const testDeleteRecord = async () => {
 #### JSForce Doc
 [Delete](https://jsforce.github.io/document/#delete)
 
-## deleteMultipleRecords(conn, sObject, records, options, callback)
+## deleteMultipleRecords(conn, sObject, records, options, callback)<a name="delete-multiple-records"></a>
 Delete records of provided Ids.
 
 #### Parameters
@@ -381,7 +381,7 @@ const testDeleteMultipleRecords = async () => {
 #### JSForce Doc
 [Delete](https://jsforce.github.io/document/#delete)
 
-## queryAndUpdateRecords(conn, sObject, conditions, updates, callback)
+## queryAndUpdateRecords(conn, sObject, conditions, updates, callback)<a name="query-and-update-records"></a>
 Query for records matching search criteria and apply defined updates.
 
 #### Parameters
@@ -427,7 +427,7 @@ const testQueryAndUpdateRecords = async () => {
 #### JSForce Doc
 [Update / Delete Queried Records](https://jsforce.github.io/document/#update-delete-queried-records)
 
-## queryAndDeleteRecords(conn, sObject, conditions, callback)
+## queryAndDeleteRecords(conn, sObject, conditions, callback)<a name="query-and-delete-records"></a>
 Query for records matching search criteria and apply defined updates.
 
 #### Parameters

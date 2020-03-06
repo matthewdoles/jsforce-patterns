@@ -1,4 +1,4 @@
-## recent(conn, sObject, callback)
+## recent(conn, sObject, callback)<a name="recent"></a>
 Returns recently accessed records from targeted SObject.
 
 #### Parameters
@@ -32,7 +32,7 @@ const testRecent = async () => {
 #### JSForce Doc
 [Recently Accessed Records](https://jsforce.github.io/document/#recently-accessed-records)
 
-## recentAllObjects(conn, callback)
+## recentAllObjects(conn, callback)<a name="recent-all-objects"></a>
 Returns recently accessed records from all SObjects.
 
 #### Parameters
@@ -65,7 +65,7 @@ const testRecent = async () => {
 #### JSForce Doc
 [Recently Accessed Records](https://jsforce.github.io/document/#recently-accessed-records)
 
-## recentlyUpdated(conn, sObject, startDate, endDate, callback)
+## recentlyUpdated(conn, sObject, startDate, endDate, callback)<a name="recently-updated"></a>
 Returns recently updated records from targeted SObject within two dates.
 
 #### Parameters
@@ -108,7 +108,7 @@ const testRecent = async () => {
 #### JSForce Doc
 [Recently Updated Records](https://jsforce.github.io/document/#recently-updated-records)
 
-## recentlyUpdated(conn, sObject, startDate, endDate, callback)
+## recentlyDeleted(conn, sObject, startDate, endDate, callback)<a name="recently-deleted"></a>
 Returns recently deleted records from targeted SObject within two dates.
 
 #### Parameters
