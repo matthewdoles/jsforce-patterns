@@ -53,11 +53,11 @@ const execute = async () => {
 
   // Verify
   console.log('Execute Query...');
-  const record = await findOne(conn, 'Account', {
+  const updatedRecord = await findOne(conn, 'Account', {
     conditions: { Id: process.env.SF_ACCOUNT_RECORD_ID },
     fields: 'Id, Name'
   });
-  console.log('Updated Account Name:'), updatedRecord.Name);
+  console.log('Updated Account Name:', updatedRecord.Name);
 
   // Logout
   await logout(conn, err => {
@@ -66,6 +66,8 @@ const execute = async () => {
     }
   });
 };
+
+execute();
 ```
 
 <b>Execution:</b>
