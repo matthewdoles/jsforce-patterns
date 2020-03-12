@@ -90,7 +90,8 @@ test('Should query Contact records', async () => {
       fields: '*, Account.*',
       options: {
         limit: 5
-      }
+      },
+      sort: 'Name'
     },
     (err, recs) => {
       expect(recs).toBeTruthy();
@@ -170,7 +171,8 @@ test('Should query Contact records w/ children', async () => {
       fields: '*, Account.*',
       options: {
         limit: 5
-      }
+      },
+      sort: 'Name'
     },
     'Cases',
     { fields: 'CaseNumber' },

@@ -1,5 +1,5 @@
 # JSForce Patterns
-[![Build Status](https://travis-ci.com/matthewdoles/jsforce-patterns.svg?branch=master)](https://travis-ci.com/matthewdoles/jsforce-patterns) ![Coveralls github](https://img.shields.io/coveralls/github/matthewdoles/jsforce-patterns)
+[![Build Status](https://travis-ci.com/matthewdoles/jsforce-patterns.svg?branch=master)](https://travis-ci.com/matthewdoles/jsforce-patterns) [![Coverage Status](https://coveralls.io/repos/github/matthewdoles/jsforce-patterns/badge.svg?branch=master)](https://coveralls.io/github/matthewdoles/jsforce-patterns?branch=master)
 
 This is a helper extension for [JSForce](https://jsforce.github.io/start/). This library aims to create reusable and dynamic functionality by abstracting repetitively used methods.
 

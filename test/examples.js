@@ -1,4 +1,3 @@
-const chalk = require('chalk');
 const jsforce = require('../index');
 
 const username = process.env.SF_USERNAME;
@@ -13,14 +12,14 @@ const execute = async () => {
   });
 
   // Query
-  console.log(chalk.bold.red('Execute Query...'));
+  console.log('Execute Query...');
   const record = await jsforce.findOne(conn, 'Account', {
     conditions: { Id: process.env.SF_ACCOUNT_RECORD_ID },
     fields: 'Id, Name'
   });
-  console.log(chalk.cyan('Current Account Name:'), record.Name);
+  console.log('Current Account Name:', record.Name);
   const newAccountName = 'Updated Account #' + Math.floor(Math.random() * 1000);
-  console.log(chalk.cyan('Change Account Name To:'), newAccountName);
+  console.log('Change Account Name To:', newAccountName);
 
   // Update
   await jsforce.updateRecord(conn, 'Account', {
@@ -29,12 +28,12 @@ const execute = async () => {
   });
 
   // Verify
-  console.log(chalk.bold.red('Execute Query...'));
+  console.log('Execute Query...');
   const updatedRecord = await jsforce.findOne(conn, 'Account', {
     conditions: { Id: process.env.SF_ACCOUNT_RECORD_ID },
     fields: 'Id, Name'
   });
-  console.log(chalk.cyan('Updated Account Name:'), updatedRecord.Name);
+  console.log('Updated Account Name:', updatedRecord.Name);
 
   // Logout
   await jsforce.logout(conn);
@@ -162,7 +161,11 @@ const testQueryAndDelete = async () => {
 
 const testSoqlQuery = async () => {
   const conn = await jsforce.login({ username, password });
-  const records = await jsforce.soqlQuery(conn, 'Contact', {});
+  const records = await jsforce.soqlQuery(conn, 'Contact', {
+    conditions: { Name: { $like: 'A%' } },
+    fields: 'Name, Account.Name',
+    sort: 'Name'
+  });
   console.log(records);
   await jsforce.logout(conn);
 };
@@ -261,4 +264,4 @@ const recentlyDeleted = async () => {
   await jsforce.logout(conn);
 };
 
-execute();
+testSoqlQuery();

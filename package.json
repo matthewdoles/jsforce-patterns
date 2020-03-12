@@ -2,7 +2,7 @@
   "author": "Matthew Doles <matteddied@gmail.com>",
   "name": "jsforce-patterns",
   "version": "1.0.0",
-  "description": "JSForce extension creating dynamic and reusable patterns for reptitive code",
+  "description": "Helper extension for JSForce abstracting repetitively used functionality.",
   "keywords": [
     "salesforce",
     "salesforce.com",
@@ -40,7 +40,6 @@
     "nodemon": "^2.0.2"
   },
   "dependencies": {
-    "chalk": "^3.0.0",
     "jsforce": "^1.9.3"
   }
 }

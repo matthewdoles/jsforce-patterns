@@ -64,7 +64,7 @@ Name | Type | Attributes | Description
 --- | --- | --- | ---
 conn | JSForce.Connection() | Required | Valid Salesforce connection.
 sObject | String | Required | SObject to query records from.
-queryOptions | Object | Required | Parameters for search criteria (see below).
+queryOptions | Object | Required, but can be empty object. | Parameters for search criteria (see below).
 callback | Function | Optional | Callback function.
 
 <b>queryOptions</b>
@@ -73,6 +73,7 @@ Name | Type | Default | Description
 --- | --- | --- | ----
 conditions | Object, String	| null - no conditions | Conditions in JSON object (MongoDB-like), or raw SOQL WHERE clause string.
 fields | Object, Array(String), String | * - wildcard selects all fields | Fields to fetch. Format can be in JSON object (MongoDB-like), array of field names, or comma-separated field names.
+sort | String, Object | null | ORDER BY clause for query. Directions: ASC, DESC, 1, -1.
 filters | Object | - | Additional query filters (see below).
 
 <b>filters</b>
@@ -103,10 +104,11 @@ const testSOQLQuery = async () => {
       conditions: {
         Name: { $like: 'A%' }
       },
-        fields: 'Id, Name, Phone',
-        options: {
-          limit: 5
-      }
+      fields: 'Id, Name, Phone',
+      options: {
+        limit: 5
+      },
+      sort: 'Name' // or { Name: 'ASC' }
     },
     (err, recs) => {
       console.log(recs);
@@ -128,9 +130,9 @@ Name | Type | Attributes | Description
 --- | --- | --- | ---
 conn | JSForce.Connection() | Required | Valid Salesforce connection.
 sObject | String | Required | SObject to query records from.
-parentOptions | Object | Required | Parameters for search criteria (see below).
+parentOptions | Object | Required, but can be empty object. | Parameters for search criteria (see below).
 childObject | String | Required | Child SObject of parent to query records from.
-childOptions | Object | Required | Parameters for search criteria (see below).
+childOptions | Object | Required, but can be empty object. | Parameters for search criteria (see below).
 callback | Function | Optional | Callback function.
 
 <b>parentOptions & childOptions</b>
@@ -139,6 +141,7 @@ Name | Type | Default | Description
 --- | --- | --- | ----
 conditions | Object, String	| null - no conditions | Conditions in JSON object (MongoDB-like), or raw SOQL WHERE clause string.
 fields | Object, Array(String), String | * - wildcard selects all fields | Fields to fetch. Format can be in JSON object (MongoDB-like), array of field names, or comma-separated field names.
+sort | String, Object | null | ORDER BY clause for query. Directions: ASC, DESC, 1, -1.
 filters | Object | - | Additional query filters (see below).
 
 <b>filters</b>
@@ -172,7 +175,8 @@ const testSOQLQueryWithChildren = async () => {
       fields: '*, Account.*',
       options: {
         limit: 5
-      }
+      },
+      sort: 'Name' // or { Name: 'ASC' }
     },
     'Cases',
     { fields: 'CaseNumber' },
