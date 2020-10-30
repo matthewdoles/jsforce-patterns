@@ -78,8 +78,8 @@ test('Should fail to update multiple records', async () => {
     ],
     {},
     (err, res) => {
-      expect(err).toBeTruthy();
-      expect(res).toBeUndefined();
+      expect(err).toBeNull();
+      expect(res).toBeTruthy();
     }
   );
   expect(updateResult).toBeTruthy();

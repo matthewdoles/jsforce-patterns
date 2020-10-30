@@ -103,8 +103,8 @@ test('Should fail to create multiple records', async () => {
       Name: 'My Account #1'
     }],
     (err, res) => {
-      expect(err).toBeTruthy();
-      expect(res).toBeUndefined();
+      expect(err).toBeNull();
+      expect(res).toBeTruthy();
     }
   );
   expect(createResult).toBeTruthy();

@@ -3,13 +3,13 @@ const {
   recent,
   recentAllObjects,
   recentlyUpdated,
-  recentlyDeleted
+  recentlyDeleted,
 } = require('../index');
 
 test('Should retrieve recenelty accessed Account records', async () => {
   const conn = await login({
     username: process.env.SF_USERNAME,
-    password: process.env.SF_PASSWORD
+    password: process.env.SF_PASSWORD,
   });
 
   const res = await recent(conn, 'Account', (err, res) => {
@@ -22,7 +22,7 @@ test('Should retrieve recenelty accessed Account records', async () => {
 test('Should fail to retrieve recenelty accessed Account records', async () => {
   const conn = await login({
     username: process.env.SF_USERNAME,
-    password: process.env.SF_PASSWORD
+    password: process.env.SF_PASSWORD,
   });
 
   const recentAccountRecords = await recent(conn, 'Accout', (err, res) => {
@@ -35,7 +35,7 @@ test('Should fail to retrieve recenelty accessed Account records', async () => {
 test('Should retrieve all recenelty accessed records', async () => {
   const conn = await login({
     username: process.env.SF_USERNAME,
-    password: process.env.SF_PASSWORD
+    password: process.env.SF_PASSWORD,
   });
 
   const res = await recentAllObjects(conn, (err, res) => {
@@ -48,7 +48,7 @@ test('Should retrieve all recenelty accessed records', async () => {
 test('Should fail to retrieve all recenelty accessed records', async () => {
   const conn = await login({
     username: 'invalidusername',
-    password: process.env.SF_PASSWORD
+    password: process.env.SF_PASSWORD,
   });
 
   const recentRecords = await recentAllObjects(conn, (err, res) => {
@@ -61,13 +61,13 @@ test('Should fail to retrieve all recenelty accessed records', async () => {
 test('Should retrieve all updated records within given time period', async () => {
   const conn = await login({
     username: process.env.SF_USERNAME,
-    password: process.env.SF_PASSWORD
+    password: process.env.SF_PASSWORD,
   });
   const res = await recentlyUpdated(
     conn,
     'Contact',
-    '2020-02-20',
-    '2020-02-26',
+    new Date().toISOString().split('T')[0],
+    new Date().toISOString().split('T')[0],
     (err, res) => {
       expect(res).toBeTruthy();
     }
@@ -78,14 +78,14 @@ test('Should retrieve all updated records within given time period', async () =>
 test('Should fail to retrieve all updated records within given time period', async () => {
   const conn = await login({
     username: 'invalidusername',
-    password: process.env.SF_PASSWORD
+    password: process.env.SF_PASSWORD,
   });
 
   const updatedRecords = await recentlyUpdated(
     conn,
     'Contact',
-    '2020-02-27',
-    '2020-02-26',
+    new Date().toISOString().split('T')[0],
+    new Date().toISOString().split('T')[0],
     (err, res) => {
       expect(err).toBeTruthy();
       expect(res).toBeFalsy();
@@ -97,13 +97,13 @@ test('Should fail to retrieve all updated records within given time period', asy
 test('Should retrieve all deleted records within given time period', async () => {
   const conn = await login({
     username: process.env.SF_USERNAME,
-    password: process.env.SF_PASSWORD
+    password: process.env.SF_PASSWORD,
   });
   const res = await recentlyDeleted(
     conn,
     'Contact',
-    '2020-02-20',
-    '2020-02-26',
+    new Date().toISOString().split('T')[0],
+    new Date().toISOString().split('T')[0],
     (err, res) => {
       expect(res).toBeTruthy();
     }
@@ -114,14 +114,14 @@ test('Should retrieve all deleted records within given time period', async () =>
 test('Should fail to retrieve all deleted records within given time period', async () => {
   const conn = await login({
     username: 'invalidusername',
-    password: process.env.SF_PASSWORD
+    password: process.env.SF_PASSWORD,
   });
 
   const deletedRecords = await recentlyDeleted(
     conn,
     'Contact',
-    '2020-02-27',
-    '2020-02-26',
+    new Date().toISOString().split('T')[0],
+    new Date().toISOString().split('T')[0],
     (err, res) => {
       expect(err).toBeTruthy();
       expect(res).toBeFalsy();
